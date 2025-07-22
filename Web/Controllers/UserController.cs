@@ -1,0 +1,65 @@
+using Application.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs;
+using Shared.Responses;
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+namespace Web.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class UserController : ControllerBase
+{
+    private readonly AuthenticateUser _authenticateUser;
+    private readonly JwtTokenGenerator _jwtTokenGenerator;
+
+    public UserController(
+        AuthenticateUser authenticateUser,
+        JwtTokenGenerator jwtTokenGenerator)
+    {
+        _authenticateUser = authenticateUser;
+        _jwtTokenGenerator = jwtTokenGenerator;
+    }
+
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
+    {
+        var user = await _authenticateUser.ExecuteAsync(dto.Username, dto.Password);
+
+        if (user is null)
+            return Unauthorized(AxResponse<UserLoginResponseDto>.Fail("Invalid credentials or user disabled."));
+
+        var token = _jwtTokenGenerator.GenerateToken(user);
+
+        var response = new UserLoginResponseDto
+        {
+            Token = token,
+            User = new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                FullName = $"{user.FirstName} {user.LastName}",
+                Email = user.Email,
+                RoleId = user.RoleId,
+                GroupId = user.GroupId
+            }
+        };
+
+        return Ok(AxResponse<UserLoginResponseDto>.Ok(response, "Login successful."));
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        Console.WriteLine("🧍‍♂️ Entré al método Me()");
+        var username = User.Identity?.Name;
+        return Ok(new { username });
+    }
+
+}
