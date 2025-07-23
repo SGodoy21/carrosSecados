@@ -78,16 +78,16 @@ LoginClean/
 
 ## 🔐 Endpoints principales
 
-| Método | Endpoint                  | Autenticación | Rol requerido | Descripción                 |
-| ------ | ------------------------- | ------------- | ------------- | --------------------------- |
-| POST   | `/api/auth/login`         | ❌            | -             | Login, devuelve JWT         |
-| POST   | `/api/auth/register`      | ❌            | -             | Registro de usuario         |
-| GET    | `/api/users/me`           | ✅            | -             | Perfil del usuario logueado |
-| PUT    | `/user/change-role`       | ✅            | Admin         | Cambiar rol de usuario      |
-| POST   | `/role/create`            | ✅            | Admin         | Crear nuevo rol             |
-| PUT    | `/role/edit`              | ✅            | Admin         | Editar rol existente        |
-| DELETE | `/role/delete`            | ✅            | Admin         | Eliminar rol                |
-| GET    | `/role/list`              | ✅            | Admin         | Listar roles                |
+| Método | Endpoint                      | Autenticación | Rol requerido | Descripción                 |
+| ------ | ----------------------------- | ------------- | ------------- | --------------------------- |
+| POST   | `/api/user/login`             | ❌            | -             | Login, devuelve JWT         |
+| POST   | `/api/user/register`          | ❌            | -             | Registro de usuario         |
+| GET    | `/api/user/me`                | ✅            | -             | Perfil del usuario logueado |
+| PUT    | `/api/user/change-role`       | ✅            | Admin         | Cambiar rol de usuario      |
+| POST   | `/api/role/create`            | ✅            | Admin         | Crear nuevo rol             |
+| PUT    | `/api/role/edit/{id}`         | ✅            | Admin         | Editar rol existente        |
+| DELETE | `/api/role/delete/{id}`       | ✅            | Admin         | Eliminar rol                |
+| GET    | `/api/role/list`              | ✅            | Admin         | Listar roles                |
 
 ---
 

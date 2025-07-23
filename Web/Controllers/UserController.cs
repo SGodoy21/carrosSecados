@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Web.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     private readonly AuthenticateUser _authenticateUser;
@@ -82,14 +82,5 @@ public class UserController : ControllerBase
         };
 
         return Ok(AxResponse<UserLoginResponseDto>.Ok(response, "Login successful."));
-    }
-
-    [Authorize]
-    [HttpGet("me")]
-    public IActionResult Me()
-    {
-        Console.WriteLine("🧍‍♂️ Entré al método Me()");
-        var username = User.Identity?.Name;
-        return Ok(new { username });
     }
 }

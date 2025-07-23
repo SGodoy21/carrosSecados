@@ -3,7 +3,6 @@ using Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
 using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
@@ -18,22 +17,22 @@ public class RoleController : ControllerBase
         _roleService = roleService;
     }
 
-    [HttpGet]
+    [HttpGet("list")]
     public async Task<ActionResult<List<RoleResponseDto>>> GetAll()
         => await _roleService.GetAllAsync();
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<ActionResult<RoleResponseDto>> Create([FromBody] RoleCreateDto dto)
         => await _roleService.CreateAsync(dto);
 
-    [HttpPut("{id}")]
+    [HttpPut("edit/{id}")]
     public async Task<ActionResult<RoleResponseDto>> Edit(int id, [FromBody] RoleEditDto dto)
     {
         dto.Id = id;
         return await _roleService.EditAsync(dto);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         await _roleService.DeleteAsync(id);
