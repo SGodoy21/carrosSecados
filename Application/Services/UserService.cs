@@ -4,6 +4,8 @@ using Domain.Entities;
 using System.Threading.Tasks;
 using Application.Exceptions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Application.Services
 {
@@ -113,6 +115,33 @@ namespace Application.Services
                 throw new InvalidOperationException("El usuario ya está habilitado.");
 
             user.IsEnabled = true;
+            await _userRepository.UpdateAsync(user);
+            return true;
+        }
+
+        public async Task<List<Shared.DTOs.UserDto>> GetAllUsersAsync()
+        {
+            var users = await _userRepository.GetAllAsync();
+            return users.Select(u => new Shared.DTOs.UserDto
+            {
+                Id = u.Id,
+                Username = u.Username,
+                FullName = $"{u.FirstName} {u.LastName}",
+                Email = u.Email,
+                RoleId = u.RoleId,
+                GroupId = u.GroupId,
+                IsEnabled = u.IsEnabled
+            }).ToList();
+        }
+
+        public async Task<bool> ChangePasswordAsync(long userId, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < 8)
+                throw new InvalidPasswordException();
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null)
+                throw new UserNotFoundException((int)userId);
+            user.PasswordHash = _passwordService.Hash(newPassword);
             await _userRepository.UpdateAsync(user);
             return true;
         }

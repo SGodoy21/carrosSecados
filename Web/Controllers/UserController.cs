@@ -163,4 +163,31 @@ public class UserController : ControllerBase
             return NotFound(new { error = ex.Message });
         }
     }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("list")]
+    public async Task<IActionResult> List()
+    {
+        var users = await _userService.GetAllUsersAsync();
+        return Ok(users);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPut("change-password/{id}")]
+    public async Task<IActionResult> ChangePassword(long id, [FromBody] string newPassword)
+    {
+        try
+        {
+            await _userService.ChangePasswordAsync(id, newPassword);
+            return Ok(new { message = "Contraseña actualizada correctamente." });
+        }
+        catch (UserNotFoundException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+        catch (InvalidPasswordException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
 }

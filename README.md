@@ -85,18 +85,22 @@ LoginClean/
 
 ## 🔐 Endpoints principales
 
-| Método | Endpoint                      | Autenticación | Rol requerido | Descripción                 |
-| ------ | ----------------------------- | ------------- | ------------- | --------------------------- |
-| POST   | `/api/user/login`             | ❌            | -             | Login, devuelve JWT         |
-| POST   | `/api/user/register`          | ❌            | -             | Registro de usuario         |
-| PUT    | `/api/user/change-role`       | ✅            | Admin         | Cambiar rol de usuario      |
-| PUT    | `/api/user/disable/{id}`      | ✅            | Admin         | Deshabilitar usuario        |
-| PUT    | `/api/user/enable/{id}`       | ✅            | Admin         | Habilitar usuario           |
-| DELETE | `/api/user/delete/{id}`       | ✅            | Admin         | Borrar usuario              |
-| POST   | `/api/role/create`            | ✅            | Admin         | Crear nuevo rol             |
-| PUT    | `/api/role/edit/{id}`         | ✅            | Admin         | Editar rol existente        |
-| DELETE | `/api/role/delete/{id}`       | ✅            | Admin         | Eliminar rol                |
-| GET    | `/api/role/list`              | ✅            | Admin         | Listar roles                |
+| Método | Endpoint                          | Autenticación | Rol requerido | Descripción                 |
+| ------ | ---------------------------------- | ------------- | ------------- | --------------------------- |
+| POST   | `/api/user/login`                 | ❌            | -             | Login, devuelve JWT         |
+| POST   | `/api/user/register`              | ❌            | -             | Registro de usuario         |
+| PUT    | `/api/user/change-role`           | ✅            | Admin         | Cambiar rol de usuario      |
+| PUT    | `/api/user/disable/{id}`          | ✅            | Admin         | Deshabilitar usuario        |
+| PUT    | `/api/user/enable/{id}`           | ✅            | Admin         | Habilitar usuario           |
+| DELETE | `/api/user/delete/{id}`           | ✅            | Admin         | Borrar usuario              |
+| GET    | `/api/user/list`                  | ✅            | Admin         | Listar todos los usuarios   |
+| PUT    | `/api/user/change-password/{id}`  | ✅            | Admin         | Cambiar contraseña de usuario |
+| POST   | `/api/role/create`                | ✅            | Admin         | Crear nuevo rol             |
+| PUT    | `/api/role/edit/{id}`             | ✅            | Admin         | Editar rol existente        |
+| DELETE | `/api/role/delete/{id}`           | ✅            | Admin         | Eliminar rol                |
+| GET    | `/api/role/list`                  | ✅            | Admin         | Listar roles                |
+
+> El endpoint `/api/user/list` devuelve todos los usuarios sin paginación ni filtros.
 
 ---
 

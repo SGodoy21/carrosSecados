@@ -11,4 +11,5 @@ public class UserDto
     public string Email { get; set; } = default!;
     public int RoleId { get; set; }
     public int GroupId { get; set; }
+    public bool IsEnabled { get; set; }
 }
