@@ -127,13 +127,11 @@ LoginClean/
 
 - Seguí las convenciones de carpetas/código.
 - Documentá métodos y servicios nuevos.
-- Usá issues y pull requests para sumar cambios.
 
 ---
 
 ## 📣 Contacto
 
-Creado y mantenido por [Tu Nombre / equipo].  
-¿Dudas o sugerencias? Escribinos a [tu-email@empresa.com] o abrí un issue en el repo.
+Creado y mantenido por AuMax IT.
 
 ---
