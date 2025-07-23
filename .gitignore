@@ -1,25 +1,61 @@
-# Build Folders
-bin/
-obj/
-
-# User-specific files
+# Visual Studio user-specific files and folders
+.vs/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 
-# Rider files
+# Rider (JetBrains)
 .idea/
 
-# VSCode
+# VSCode settings
 .vscode/
 
-# ASP.NET temporary files
-*.dbmdl
-*.bak
+# Build output
+**/bin/
+**/obj/
 
-# Logs
+# Copilot & VS indexes
+CopilotIndices/
+FileContentIndex/
+ProjectEvaluation/
+
+# Test results
+TestResults/
+*.trx
+
+# Logs and temporary files
 *.log
+*.bak
+*.swp
+*~
+*.tmp
 
-# Others
+# Package management
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Others / OS
 .env
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Publish profiles and deployment
+*.publish.xml
+AppPackages/
+
+# SQL Server
+*.mdf
+*.ldf
+
+# Code coverage & profiler
+*.coverage
+*.coveragexml
+coverage/
+*.psess
+*.vsp
+*.vspx
