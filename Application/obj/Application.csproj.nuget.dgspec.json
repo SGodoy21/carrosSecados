@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Application\\Application.csproj": {}
+    "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Application\\Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Application\\Application.csproj": {
+    "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Application\\Application.csproj",
-        "packagesPath": "C:\\Users\\gadie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Application\\obj\\",
+        "projectPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Application\\Application.csproj",
+        "packagesPath": "C:\\Users\\Maciel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\gadie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Maciel\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -33,11 +33,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Domain\\Domain.csproj"
+              "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Shared\\Shared.csproj": {
-                "projectPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Shared\\Shared.csproj"
+              "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Shared\\Shared.csproj": {
+                "projectPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Shared\\Shared.csproj"
               }
             }
           }
@@ -52,7 +52,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -95,24 +95,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Domain\\Domain.csproj": {
+    "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\gadie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\Maciel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\gadie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Maciel\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -140,7 +140,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -161,24 +161,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Shared\\Shared.csproj": {
+    "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Shared\\Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Shared\\Shared.csproj",
+        "projectUniqueName": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Shared\\Shared.csproj",
         "projectName": "Shared",
-        "projectPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Shared\\Shared.csproj",
-        "packagesPath": "C:\\Users\\gadie\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Shared\\obj\\",
+        "projectPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Shared\\Shared.csproj",
+        "packagesPath": "C:\\Users\\Maciel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Shared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\gadie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Maciel\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -206,7 +206,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -237,7 +237,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

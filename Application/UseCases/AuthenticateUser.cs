@@ -20,13 +20,16 @@ public class AuthenticateUser
     /// <returns>The authenticated user or null if invalid.</returns>
     public async Task<User?> ExecuteAsync(string alias, string password)
     {
+        Console.WriteLine($"Server UTC now: {DateTime.UtcNow}");
+
         var user = await _userRepository.GetByAliasAndPasswordAsync(alias, password);
 
         if (user == null || !user.IsEnabled)
             return null;
 
         //// ? Set token expiration (prefer UtcNow)
-        user.TokenExpiresAt = DateTime.Now.AddMinutes(120);
+        user.CreatedAt = DateTime.UtcNow;
+        user.TokenExpiresAt = DateTime.UtcNow.AddMinutes(120);
 
         await _userRepository.UpdateAsync(user);
 

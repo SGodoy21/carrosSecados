@@ -31,7 +31,7 @@ public class LoginCleanContext : DbContext
             entity.Property(e => e.ClientId);
             entity.Property(e => e.RecoveryToken).HasMaxLength(255);
             entity.Property(e => e.TokenExpiresAt);
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATA()");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
 
             entity.HasIndex(e => e.Username).IsUnique();
             entity.HasIndex(e => e.Email).IsUnique();
@@ -51,30 +51,31 @@ public class LoginCleanContext : DbContext
             entity.Property(r => r.Name).IsRequired().HasMaxLength(100);
         });
 
-        //modelBuilder.Entity<Role>().HasData(
-        //    new Role { Id = 1, Name = "Admin" },
-        //    new Role { Id = 2, Name = "User" }
-        //);
+        modelBuilder.Entity<Role>().HasData(
+       new Role { Id = 1, Name = "Admin" },
+       new Role { Id = 2, Name = "User" }
+   );
 
-        //modelBuilder.Entity<User>().HasData(
-        //    new User
-        //    {
-        //        Id = 1,
-        //        Username = "admin",
-        //        Email = "admin@example.com",
-        //        PasswordHash = "admin123", // cambiar luego por un hash
-        //        FirstName = "System",
-        //        LastName = "Administrator",
-        //        Phone = "1234567890",
-        //        IsEnabled = true,
-        //        FailedAccessCount = 0,
-        //        GroupId = 1,
-        //        ClientId = 1,
-        //        RecoveryToken = "",
-        //        TokenExpiresAt = null,
-        //        CreatedAt = new DateTime(2025, 7, 21, 9, 0, 0),
-        //        RoleId = 1
-        //    }
-        //);
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Id = 1,
+                Username = "admin",
+                Email = "admin@example.com",
+                PasswordHash = "admin123", // IMPORTANTE: usá hash real
+                FirstName = "System",
+                LastName = "Administrator",
+                Phone = "1234567890",
+                IsEnabled = true,
+                FailedAccessCount = 0,
+                GroupId = 1,
+                ClientId = 1,
+                RecoveryToken = "",
+                TokenExpiresAt = null,
+                CreatedAt = DateTime.UtcNow,
+                RoleId = 1
+            }
+        );
+
     }
 }

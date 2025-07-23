@@ -28,28 +28,33 @@ public class JwtTokenGenerator
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        // Agrega los claims que quieras (adaptando nombres a tu modelo)
-        var claims = new List<Claim>
+            var claims = new List<Claim>
     {
         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         new Claim(ClaimTypes.Name, user.Username),
         new Claim(ClaimTypes.Email, user.Email ?? ""),
         new Claim(ClaimTypes.Role, user.Role?.Name ?? "User"),
-        // Claims extra (solo si tu entidad los tiene)
         new Claim("FullName", $"{user.FirstName} {user.LastName}"),
-        new Claim("GroupId", user.GroupId.ToString()),         // si aplica
-        new Claim("IsEnabled", user.IsEnabled.ToString()),     // si aplica
-        // Otros custom claims que necesites...
     };
+
+        if (user.GroupId != null)
+            claims.Add(new Claim("GroupId", user.GroupId.ToString()));
+
+        claims.Add(new Claim("IsEnabled", user.IsEnabled.ToString()));
+
+        var now = DateTime.UtcNow;
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.Now.AddMinutes(expirationMinutes),
+            NotBefore = now,
+            IssuedAt = now,
+            Expires = now.AddMinutes(expirationMinutes),
             SigningCredentials = credentials,
             Issuer = issuer,
             Audience = audience
         };
+
 
         var handler = new JwtSecurityTokenHandler();
         var token = handler.CreateToken(tokenDescriptor);

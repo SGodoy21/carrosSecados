@@ -84,6 +84,7 @@ var audience = jwtSection["Audience"];
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.UseSecurityTokenValidators = true;
         options.RequireHttpsMetadata = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -98,11 +99,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             // Usar DateTime.Now en vez de UtcNow para la validación (NO RECOMENDADO)
             LifetimeValidator = (notBefore, expires, token, parameters) =>
             {
-                var now = DateTime.Now;
+                var now = DateTime.UtcNow;
                 return (notBefore == null || now >= notBefore) &&
                        (expires == null || now < expires);
             },
-            ClockSkew = TimeSpan.Zero
+            ClockSkew = TimeSpan.FromMinutes(2)
         };
         // Si querés, podés agregar OnAuthenticationFailed para debug.
         options.Events = new JwtBearerEvents
@@ -110,6 +111,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             OnAuthenticationFailed = ctx =>
             {
                 Console.WriteLine("JWT ERROR: " + ctx.Exception.Message);
+                Console.WriteLine("=== TokenValidationParameters ===");
+                Console.WriteLine($"ValidateIssuerSigningKey: {options.TokenValidationParameters.ValidateIssuerSigningKey}");
+                Console.WriteLine($"IssuerSigningKey: {options.TokenValidationParameters.IssuerSigningKey}");
+                Console.WriteLine($"ValidateIssuer: {options.TokenValidationParameters.ValidateIssuer}");
+                Console.WriteLine($"ValidIssuer: {options.TokenValidationParameters.ValidIssuer}");
+                Console.WriteLine($"ValidateAudience: {options.TokenValidationParameters.ValidateAudience}");
+                Console.WriteLine($"ValidAudience: {options.TokenValidationParameters.ValidAudience}");
+                Console.WriteLine($"ValidateLifetime: {options.TokenValidationParameters.ValidateLifetime}");
+                Console.WriteLine($"RequireExpirationTime: {options.TokenValidationParameters.RequireExpirationTime}");
+                Console.WriteLine($"ClockSkew: {options.TokenValidationParameters.ClockSkew}");
+                Console.WriteLine("===============================");
+
                 return Task.CompletedTask;
             }
         };
@@ -133,6 +146,7 @@ app.UseCors(devCorsPolicy);
 app.Use(async (context, next) =>
 {
     var rawHeader = context.Request.Headers["Authorization"].ToString();
+    //var jwt = context.Request.Headers["Authorization"].Replace("Bearer ", string.Empty);
     if (!string.IsNullOrEmpty(rawHeader))
     {
         Console.WriteLine("HEADER Authorization: " + rawHeader);

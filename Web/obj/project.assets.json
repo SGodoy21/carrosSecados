@@ -780,10 +780,10 @@
           }
         }
       },
-      "Microsoft.IdentityModel.JsonWebTokens/7.1.2": {
+      "Microsoft.IdentityModel.JsonWebTokens/8.9.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.IdentityModel.Tokens": "7.1.2"
+          "Microsoft.IdentityModel.Tokens": "8.9.0"
         },
         "compile": {
           "lib/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll": {
@@ -1224,11 +1224,11 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "System.IdentityModel.Tokens.Jwt/7.1.2": {
+      "System.IdentityModel.Tokens.Jwt/8.9.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.IdentityModel.JsonWebTokens": "7.1.2",
-          "Microsoft.IdentityModel.Tokens": "7.1.2"
+          "Microsoft.IdentityModel.JsonWebTokens": "8.9.0",
+          "Microsoft.IdentityModel.Tokens": "8.9.0"
         },
         "compile": {
           "lib/net8.0/System.IdentityModel.Tokens.Jwt.dll": {
@@ -2890,15 +2890,14 @@
         "microsoft.identitymodel.abstractions.nuspec"
       ]
     },
-    "Microsoft.IdentityModel.JsonWebTokens/7.1.2": {
-      "sha512": "cloLGeZolXbCJhJBc5OC05uhrdhdPL6MWHuVUnkkUvPDeK7HkwThBaLZ1XjBQVk9YhxXE2OvHXnKi0PLleXxDg==",
+    "Microsoft.IdentityModel.JsonWebTokens/8.9.0": {
+      "sha512": "QcNC57hJLc6LIcy2PTYlD8iRBQBm6bqPKbCjsRYWlp7QTyJisF0ImUWaa3mx6wWaS1upwYneYVPiIiNSlAy16g==",
       "type": "package",
-      "path": "microsoft.identitymodel.jsonwebtokens/7.1.2",
+      "path": "microsoft.identitymodel.jsonwebtokens/8.9.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net461/Microsoft.IdentityModel.JsonWebTokens.dll",
-        "lib/net461/Microsoft.IdentityModel.JsonWebTokens.xml",
+        "README.md",
         "lib/net462/Microsoft.IdentityModel.JsonWebTokens.dll",
         "lib/net462/Microsoft.IdentityModel.JsonWebTokens.xml",
         "lib/net472/Microsoft.IdentityModel.JsonWebTokens.dll",
@@ -2907,9 +2906,11 @@
         "lib/net6.0/Microsoft.IdentityModel.JsonWebTokens.xml",
         "lib/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll",
         "lib/net8.0/Microsoft.IdentityModel.JsonWebTokens.xml",
+        "lib/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll",
+        "lib/net9.0/Microsoft.IdentityModel.JsonWebTokens.xml",
         "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.dll",
         "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.xml",
-        "microsoft.identitymodel.jsonwebtokens.7.1.2.nupkg.sha512",
+        "microsoft.identitymodel.jsonwebtokens.8.9.0.nupkg.sha512",
         "microsoft.identitymodel.jsonwebtokens.nuspec"
       ]
     },
@@ -3462,15 +3463,14 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "System.IdentityModel.Tokens.Jwt/7.1.2": {
-      "sha512": "Thhbe1peAmtSBFaV/ohtykXiZSOkx59Da44hvtWfIMFofDA3M3LaVyjstACf2rKGn4dEDR2cUpRAZ0Xs/zB+7Q==",
+    "System.IdentityModel.Tokens.Jwt/8.9.0": {
+      "sha512": "7Pu9UjF1+so0s8zgzcIxSxbRQoiM2DMdwazVGmNptX3O6gDfMyeWZBd/Zn6VueDteN0ZTHw2acsf6+mAe8UpMw==",
       "type": "package",
-      "path": "system.identitymodel.tokens.jwt/7.1.2",
+      "path": "system.identitymodel.tokens.jwt/8.9.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net461/System.IdentityModel.Tokens.Jwt.dll",
-        "lib/net461/System.IdentityModel.Tokens.Jwt.xml",
+        "README.md",
         "lib/net462/System.IdentityModel.Tokens.Jwt.dll",
         "lib/net462/System.IdentityModel.Tokens.Jwt.xml",
         "lib/net472/System.IdentityModel.Tokens.Jwt.dll",
@@ -3479,9 +3479,11 @@
         "lib/net6.0/System.IdentityModel.Tokens.Jwt.xml",
         "lib/net8.0/System.IdentityModel.Tokens.Jwt.dll",
         "lib/net8.0/System.IdentityModel.Tokens.Jwt.xml",
+        "lib/net9.0/System.IdentityModel.Tokens.Jwt.dll",
+        "lib/net9.0/System.IdentityModel.Tokens.Jwt.xml",
         "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.dll",
         "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.xml",
-        "system.identitymodel.tokens.jwt.7.1.2.nupkg.sha512",
+        "system.identitymodel.tokens.jwt.8.9.0.nupkg.sha512",
         "system.identitymodel.tokens.jwt.nuspec"
       ]
     },
@@ -4122,27 +4124,28 @@
       "Microsoft.EntityFrameworkCore.Design >= 8.0.18",
       "Microsoft.IdentityModel.Tokens >= 8.12.1",
       "Shared >= 1.0.0",
-      "Swashbuckle.AspNetCore >= 9.0.3"
+      "Swashbuckle.AspNetCore >= 9.0.3",
+      "System.IdentityModel.Tokens.Jwt >= 8.9.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gadie\\.nuget\\packages\\": {},
+    "C:\\Users\\Maciel\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Web\\Web.csproj",
+      "projectUniqueName": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Web\\Web.csproj",
       "projectName": "Web",
-      "projectPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Web\\Web.csproj",
-      "packagesPath": "C:\\Users\\gadie\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Web\\obj\\",
+      "projectPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Web\\Web.csproj",
+      "packagesPath": "C:\\Users\\Maciel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\gadie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Maciel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4158,14 +4161,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Application\\Application.csproj": {
-              "projectPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Application\\Application.csproj"
+            "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Application\\Application.csproj": {
+              "projectPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Application\\Application.csproj"
             },
-            "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\IoC\\IoC.csproj": {
-              "projectPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\IoC\\IoC.csproj"
+            "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\IoC\\IoC.csproj": {
+              "projectPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\IoC\\IoC.csproj"
             },
-            "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Shared\\Shared.csproj": {
-              "projectPath": "C:\\Users\\gadie\\Desktop\\axLogin\\LoginClean\\Shared\\Shared.csproj"
+            "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Shared\\Shared.csproj": {
+              "projectPath": "C:\\Users\\Maciel\\Documents\\AUMAX\\Estandar\\Back\\axLoginClean\\Shared\\Shared.csproj"
             }
           }
         }
@@ -4180,7 +4183,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -4207,6 +4210,10 @@
           "Swashbuckle.AspNetCore": {
             "target": "Package",
             "version": "[9.0.3, )"
+          },
+          "System.IdentityModel.Tokens.Jwt": {
+            "target": "Package",
+            "version": "[8.9.0, )"
           }
         },
         "imports": [
@@ -4228,7 +4235,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
