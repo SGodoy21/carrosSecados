@@ -1,20 +1,139 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# LoginClean – Starter Kit (.NET 8 + Clean Architecture)
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+Este proyecto es una base **lista para producción** para sistemas de login, autenticación y gestión de usuarios con JWT, utilizando Clean Architecture, Entity Framework Core y buenas prácticas modernas de .NET.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+---
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## 🚀 ¿Qué incluye este starter?
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+- Autenticación y autorización vía JWT
+- Arquitectura limpia por capas: Web, Application, Domain, Infrastructure, IoC, Shared
+- Swagger para pruebas rápidas y documentación
+- Entity Framework Core con migraciones listas
+- Control de CORS y OutputCache (desactivable)
+- Estructura para usuarios, roles y expiración de tokens
+- Configuración lista para ambientes de desarrollo y producción
+- **Gestión de roles**: CRUD de roles y asignación de roles a usuarios
+- **Protección de endpoints por rol**: solo administradores pueden editar roles
+- **Hash de contraseñas seguro** con BCrypt
+- DTOs para registro, login, cambio de rol y respuestas
+
+---
+
+## 🗂️ Estructura de carpetas
+
+```text
+LoginClean/
+│
+├── Web/           # API REST y configuración de middleware (Program.cs)
+├── Application/   # Lógica de negocio, servicios y DTOs
+├── Domain/        # Entidades, modelos y lógica de dominio puro
+├── Infrastructure/# Acceso a datos, EF Core, repositorios
+├── IoC/           # Inyección de dependencias y servicios
+└── Shared/        # Utilidades y constantes globales
+```
+
+---
+
+## ⚡ Primeros pasos rápidos
+
+1. **Clonar el repositorio**
+    ```bash
+    git clone https://dev.azure.com/aumax/Estandarizacion%20IT/_git/axLoginClean
+    cd axLoginClean
+    ```
+
+2. **Configurar la base de datos**
+    - Editar la cadena de conexión en `Web/appsettings.Development.json`:
+        ```json
+        "ConnectionStrings": {
+          "axLoginCleanEntities": "Server=localhost;Database=LoginCleanDb;User Id=usuario;Password=clave;"
+        }
+        ```
+    - Configurar los valores de JWT:
+        ```json
+        "JwtSettings": {
+          "Key": "clave-larga-y-segura",
+          "Issuer": "LoginClean",
+          "Audience": "LoginCleanUsers"
+        }
+        ```
+
+3. **Aplicar migraciones**
+    ```bash
+    dotnet ef database update --project Infrastructure
+    ```
+
+4. **Ejecutar la API**
+    ```bash
+    dotnet run --project Web
+    ```
+
+5. **Probar en Swagger**
+    - Accedé a [http://localhost:5000](http://localhost:5000) (o el puerto configurado)
+    - Usá `/api/auth/login` para loguearte y obtener un JWT.
+    - Probá endpoints protegidos usando el botón **Authorize**.
+
+---
+
+## 🔐 Endpoints principales
+
+| Método | Endpoint                  | Autenticación | Rol requerido | Descripción                 |
+| ------ | ------------------------- | ------------- | ------------- | --------------------------- |
+| POST   | `/api/auth/login`         | ❌            | -             | Login, devuelve JWT         |
+| POST   | `/api/auth/register`      | ❌            | -             | Registro de usuario         |
+| GET    | `/api/users/me`           | ✅            | -             | Perfil del usuario logueado |
+| PUT    | `/user/change-role`       | ✅            | Admin         | Cambiar rol de usuario      |
+| POST   | `/role/create`            | ✅            | Admin         | Crear nuevo rol             |
+| PUT    | `/role/edit`              | ✅            | Admin         | Editar rol existente        |
+| DELETE | `/role/delete`            | ✅            | Admin         | Eliminar rol                |
+| GET    | `/role/list`              | ✅            | Admin         | Listar roles                |
+
+---
+
+## 🔒 Seguridad y buenas prácticas
+
+- **Hash de contraseñas con BCrypt**: las contraseñas nunca se guardan en texto plano.
+- **JWT con claims de rol**: los tokens incluyen el rol del usuario para proteger endpoints.
+- **[Authorize(Roles = "Admin")]**: solo administradores pueden editar roles o cambiar roles de usuarios.
+- Usar variables de entorno para las claves sensibles (especialmente JWT Key y cadenas de conexión)
+- Cambiar la política de CORS en producción
+- Proteger el endpoint de Swagger en ambientes productivos
+- Usar migraciones para controlar los cambios de la base de datos
+- Manejar excepciones globales y devolver respuestas uniformes (middleware incluido)
+
+---
+
+## 📝 Módulos y DTOs principales
+
+- **Entidades**: `User`, `Role`
+- **DTOs**: `RegisterUserDto`, `UserLoginDto`, `UserLoginResponseDto`, `ChangeUserRoleDto`, `RoleCreateDto`, `RoleEditDto`, `RoleResponseDto`
+- **Servicios**: `UserService`, `RoleService`, `JwtTokenGenerator`, `PasswordHasher`
+- **Repositorios**: `UserRepository`, `RoleRepository`
+
+---
+
+## 📝 To-Do / Ideas para mejorar
+
+- Implementar refresh token y logout (invalidación server-side)
+- Auditar logins/acciones de usuarios
+- Notificaciones por email para recuperación de contraseña
+- Integrar CI/CD (YAML pipeline para Azure DevOps o GitHub Actions)
+- Dockerizar el entorno para fácil despliegue
+
+---
+
+## 👨‍💻 Colaboración
+
+- Seguí las convenciones de carpetas/código.
+- Documentá métodos y servicios nuevos.
+- Usá issues y pull requests para sumar cambios.
+
+---
+
+## 📣 Contacto
+
+Creado y mantenido por [Tu Nombre / equipo].  
+¿Dudas o sugerencias? Escribinos a [tu-email@empresa.com] o abrí un issue en el repo.
+
+---

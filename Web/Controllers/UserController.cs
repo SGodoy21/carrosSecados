@@ -16,15 +16,46 @@ public class UserController : ControllerBase
 {
     private readonly AuthenticateUser _authenticateUser;
     private readonly JwtTokenGenerator _jwtTokenGenerator;
+    private readonly Application.Services.UserService _userService;
 
     public UserController(
         AuthenticateUser authenticateUser,
-        JwtTokenGenerator jwtTokenGenerator)
+        JwtTokenGenerator jwtTokenGenerator,
+        Application.Services.UserService userService)
     {
         _authenticateUser = authenticateUser;
         _jwtTokenGenerator = jwtTokenGenerator;
+        _userService = userService;
     }
 
+    [Authorize(Roles = "Admin")]
+    [HttpPut("change-role")]
+    public async Task<IActionResult> ChangeRole([FromBody] Shared.DTOs.ChangeUserRoleDto dto)
+    {
+        try
+        {
+            await _userService.ChangeUserRoleAsync(dto);
+            return Ok(new { message = "Rol actualizado correctamente." });
+        }
+        catch (System.Exception ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
+    {
+        try
+        {
+            await _userService.RegistrarUsuarioAsync(dto);
+            return Ok(new { message = "Usuario registrado correctamente." });
+        }
+        catch (System.Exception ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
@@ -61,5 +92,4 @@ public class UserController : ControllerBase
         var username = User.Identity?.Name;
         return Ok(new { username });
     }
-
 }
