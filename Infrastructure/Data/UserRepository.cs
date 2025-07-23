@@ -15,6 +15,7 @@ namespace Infrastructure.Data
         {
             _context = context;
         }
+
         public async Task<User> GetByIdAsync(long userId)
         {
             return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Id == userId);
@@ -56,6 +57,12 @@ namespace Infrastructure.Data
         public async Task<List<User>> GetUsersByRoleIdAsync(int roleId)
         {
             return await _context.Users.Where(u => u.RoleId == roleId).ToListAsync();
+        }
+
+        public async Task DeleteAsync(User user)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
         }
     }
 }

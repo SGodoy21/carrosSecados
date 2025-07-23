@@ -4,11 +4,15 @@ using Shared.DTOs;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
+using System.Text.RegularExpressions;
+using Application.Exceptions;
 
 namespace Application.Services
 {
     public class RoleService
     {
+        private static readonly string[] ProtectedRoles = new[] { "Admin", "SuperAdmin" };
         private readonly IRoleRepository _roleRepository;
         private readonly IUserRepository _userRepository;
 
@@ -27,13 +31,16 @@ namespace Application.Services
         public async Task<RoleResponseDto> CreateAsync(RoleCreateDto dto)
         {
             if (string.IsNullOrWhiteSpace(dto.Name) || dto.Name.Length < 3 || dto.Name.Length > 100)
-                throw new System.Exception("El nombre debe tener entre 3 y 100 caracteres.");
-            if (!dto.Name.All(char.IsLetterOrDigit))
-                throw new System.Exception("El nombre solo puede contener letras y números.");
+                throw new ArgumentException("El nombre debe tener entre 3 y 100 caracteres.");
+            if (!Regex.IsMatch(dto.Name, "^[a-zA-Z0-9_]+$"))
+                throw new ArgumentException("El nombre solo puede contener letras, números y guiones bajos.");
+            if (ProtectedRoles.Contains(dto.Name, StringComparer.OrdinalIgnoreCase))
+                throw new InvalidOperationException("No se puede crear un rol protegido.");
 
-            var exists = await _roleRepository.GetByNameAsync(dto.Name);
+            var exists = (await _roleRepository.GetAllAsync())
+                .FirstOrDefault(r => r.Name.Equals(dto.Name, System.StringComparison.OrdinalIgnoreCase));
             if (exists != null)
-                throw new System.Exception("Ya existe un rol con ese nombre.");
+                throw new RoleNameExistsException(dto.Name);
 
             var role = new Role { Name = dto.Name };
             await _roleRepository.AddAsync(role);
@@ -45,11 +52,19 @@ namespace Application.Services
         {
             var role = await _roleRepository.GetByIdAsync(dto.Id);
             if (role == null)
-                throw new System.Exception("Rol no encontrado.");
-
-            var exists = await _roleRepository.GetByNameAsync(dto.Name);
+                throw new RoleNotFoundException(dto.Id);
+            if (ProtectedRoles.Contains(role.Name, StringComparer.OrdinalIgnoreCase))
+                throw new InvalidOperationException("No se puede modificar un rol protegido.");
+            if (string.IsNullOrWhiteSpace(dto.Name) || dto.Name.Length < 3 || dto.Name.Length > 100)
+                throw new ArgumentException("El nombre debe tener entre 3 y 100 caracteres.");
+            if (!Regex.IsMatch(dto.Name, "^[a-zA-Z0-9_]+$"))
+                throw new ArgumentException("El nombre solo puede contener letras, números y guiones bajos.");
+            if (ProtectedRoles.Contains(dto.Name, StringComparer.OrdinalIgnoreCase))
+                throw new InvalidOperationException("No se puede asignar un nombre de rol protegido.");
+            var exists = (await _roleRepository.GetAllAsync())
+                .FirstOrDefault(r => r.Name.Equals(dto.Name, System.StringComparison.OrdinalIgnoreCase));
             if (exists != null && exists.Id != dto.Id)
-                throw new System.Exception("Ya existe un rol con ese nombre.");
+                throw new RoleNameExistsException(dto.Name);
 
             role.Name = dto.Name;
             await _roleRepository.UpdateAsync(role);
@@ -61,11 +76,12 @@ namespace Application.Services
         {
             var role = await _roleRepository.GetByIdAsync(id);
             if (role == null)
-                throw new System.Exception("Rol no encontrado.");
-
+                throw new RoleNotFoundException(id);
+            if (ProtectedRoles.Contains(role.Name, StringComparer.OrdinalIgnoreCase))
+                throw new InvalidOperationException("No se puede eliminar un rol protegido.");
             var usersWithRole = await _userRepository.GetUsersByRoleIdAsync(id);
             if (usersWithRole.Any())
-                throw new System.Exception("No se puede eliminar un rol asignado a usuarios.");
+                throw new RoleInUseException(id);
 
             await _roleRepository.DeleteAsync(role);
             return true;

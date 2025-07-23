@@ -2,6 +2,8 @@ using Application.Helpers;
 using Application.Interfaces;
 using Domain.Entities;
 using System.Threading.Tasks;
+using Application.Exceptions;
+using System;
 
 namespace Application.Services
 {
@@ -22,11 +24,11 @@ namespace Application.Services
         {
             var user = await _userRepository.GetByIdAsync(dto.UserId);
             if (user == null)
-                throw new System.Exception("Usuario no encontrado.");
+                throw new UserNotFoundException((int)dto.UserId);
 
             var role = await _roleRepository.GetByIdAsync(dto.RoleId);
             if (role == null)
-                throw new System.Exception("Rol no encontrado.");
+                throw new RoleNotFoundException(dto.RoleId);
 
             user.RoleId = dto.RoleId;
             await _userRepository.UpdateAsync(user);
@@ -37,16 +39,16 @@ namespace Application.Services
         {
             // Validaciones mínimas
             if (string.IsNullOrWhiteSpace(dto.Password) || dto.Password.Length < 8)
-                throw new System.Exception("La contraseña debe tener al menos 8 caracteres.");
+                throw new InvalidPasswordException();
             if (string.IsNullOrWhiteSpace(dto.Email) || !dto.Email.Contains("@"))
-                throw new System.Exception("Email inválido.");
+                throw new InvalidEmailException(dto.Email);
 
             // Verificar unicidad
             if (await _userRepository.GetByUsernameAsync(dto.Username) != null)
-                throw new System.Exception("El nombre de usuario ya está registrado.");
+                throw new UsernameExistsException(dto.Username);
             // Si tienes método para email, úsalo:
             // if (await _userRepository.GetByEmailAsync(dto.Email) != null)
-            //     throw new System.Exception("El email ya está registrado.");
+            //     throw new InvalidEmailException(dto.Email);
 
             // Hashear contraseña
             var passwordHash = _passwordService.Hash(dto.Password);
@@ -77,6 +79,42 @@ namespace Application.Services
             var user = await _userRepository.GetByUsernameAsync(username);
             if (user == null) return false;
             return _passwordService.Verify(password, user.PasswordHash);
+        }
+
+        public async Task<bool> DisableUserAsync(long userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null)
+                throw new UserNotFoundException((int)userId);
+            if (!user.IsEnabled)
+                throw new InvalidOperationException("El usuario ya está deshabilitado.");
+
+            user.IsEnabled = false;
+            await _userRepository.UpdateAsync(user);
+            return true;
+        }
+
+        public async Task<bool> DeleteUserAsync(long userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null)
+                throw new UserNotFoundException((int)userId);
+
+            await _userRepository.DeleteAsync(user);
+            return true;
+        }
+
+        public async Task<bool> EnableUserAsync(long userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null)
+                throw new UserNotFoundException((int)userId);
+            if (user.IsEnabled)
+                throw new InvalidOperationException("El usuario ya está habilitado.");
+
+            user.IsEnabled = true;
+            await _userRepository.UpdateAsync(user);
+            return true;
         }
     }
 }

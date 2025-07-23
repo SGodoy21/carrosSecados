@@ -17,5 +17,6 @@ namespace Application.Interfaces
         Task<bool> AddAsync(User newUser);
         Task UpdateAsync(User user);
         Task<List<User>> GetUsersByRoleIdAsync(int roleId);
+        Task DeleteAsync(User user);
     }
 }

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using Application.Exceptions;
+using System;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -19,23 +21,66 @@ public class RoleController : ControllerBase
 
     [HttpGet("list")]
     public async Task<ActionResult<List<RoleResponseDto>>> GetAll()
-        => await _roleService.GetAllAsync();
+    {
+        return await _roleService.GetAllAsync();
+    }
 
     [HttpPost("create")]
-    public async Task<ActionResult<RoleResponseDto>> Create([FromBody] RoleCreateDto dto)
-        => await _roleService.CreateAsync(dto);
+    public async Task<IActionResult> Create([FromBody] RoleCreateDto dto)
+    {
+        try
+        {
+            var result = await _roleService.CreateAsync(dto);
+            return Ok(result);
+        }
+        catch (RoleNameExistsException ex)
+        {
+            return Conflict(new { error = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
 
     [HttpPut("edit/{id}")]
-    public async Task<ActionResult<RoleResponseDto>> Edit(int id, [FromBody] RoleEditDto dto)
+    public async Task<IActionResult> Edit(int id, [FromBody] RoleEditDto dto)
     {
         dto.Id = id;
-        return await _roleService.EditAsync(dto);
+        try
+        {
+            var result = await _roleService.EditAsync(dto);
+            return Ok(result);
+        }
+        catch (RoleNotFoundException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+        catch (RoleNameExistsException ex)
+        {
+            return Conflict(new { error = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
     }
 
     [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _roleService.DeleteAsync(id);
-        return NoContent();
+        try
+        {
+            await _roleService.DeleteAsync(id);
+            return NoContent();
+        }
+        catch (RoleNotFoundException ex)
+        {
+            return NotFound(new { error = ex.Message });
+        }
+        catch (RoleInUseException ex)
+        {
+            return Conflict(new { error = ex.Message });
+        }
     }
 }

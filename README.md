@@ -26,11 +26,18 @@ Este proyecto es una base **lista para producción** para sistemas de login, aut
 LoginClean/
 │
 ├── Web/           # API REST y configuración de middleware (Program.cs)
-├── Application/   # Lógica de negocio, servicios y DTOs
+│   └── Controllers/   # Controladores de API (User, Role)
+├── Application/   # Lógica de negocio, servicios, interfaces, helpers, excepciones
+│   └── Services/      # Servicios (UserService, RoleService)
+│   └── Interfaces/    # Interfaces de repositorios y servicios
+│   └── Helpers/       # Utilidades (PasswordHasher, BcryptPasswordService)
+│   └── Exceptions/    # Excepciones custom
 ├── Domain/        # Entidades, modelos y lógica de dominio puro
+│   └── Entities/      # Entidades (User, Role)
 ├── Infrastructure/# Acceso a datos, EF Core, repositorios
+│   └── Data/          # Implementaciones de repositorios
 ├── IoC/           # Inyección de dependencias y servicios
-└── Shared/        # Utilidades y constantes globales
+└── Shared/        # Utilidades y constantes globales, DTOs, respuestas
 ```
 
 ---
@@ -82,8 +89,10 @@ LoginClean/
 | ------ | ----------------------------- | ------------- | ------------- | --------------------------- |
 | POST   | `/api/user/login`             | ❌            | -             | Login, devuelve JWT         |
 | POST   | `/api/user/register`          | ❌            | -             | Registro de usuario         |
-| GET    | `/api/user/me`                | ✅            | -             | Perfil del usuario logueado |
 | PUT    | `/api/user/change-role`       | ✅            | Admin         | Cambiar rol de usuario      |
+| PUT    | `/api/user/disable/{id}`      | ✅            | Admin         | Deshabilitar usuario        |
+| PUT    | `/api/user/enable/{id}`       | ✅            | Admin         | Habilitar usuario           |
+| DELETE | `/api/user/delete/{id}`       | ✅            | Admin         | Borrar usuario              |
 | POST   | `/api/role/create`            | ✅            | Admin         | Crear nuevo rol             |
 | PUT    | `/api/role/edit/{id}`         | ✅            | Admin         | Editar rol existente        |
 | DELETE | `/api/role/delete/{id}`       | ✅            | Admin         | Eliminar rol                |
