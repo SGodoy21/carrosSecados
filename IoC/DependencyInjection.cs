@@ -9,13 +9,13 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddProjectServices(this IServiceCollection services)
     {
-        services.AddScoped<AuthenticateUser>();
-        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<AutenticacionUsuario>();
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<JwtTokenGenerator>();
         services.AddSingleton<IPasswordService, BcryptPasswordService>();
-        services.AddScoped<Application.Services.UserService>();
-        services.AddScoped<IRoleRepository, RoleRepository>();
-        services.AddScoped<Application.Services.RoleService>();
+        services.AddScoped<Application.Services.UsuarioService>();
+        services.AddScoped<IRolRepository, RolRepository>();
+        services.AddScoped<Application.Services.RolService>();
         return services;
     }
 }

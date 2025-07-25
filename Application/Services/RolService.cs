@@ -10,66 +10,66 @@ using Application.Exceptions;
 
 namespace Application.Services
 {
-    public class RoleService
+    public class RolService
     {
         private static readonly string[] ProtectedRoles = new[] { "Admin", "SuperAdmin" };
-        private readonly IRoleRepository _roleRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IRolRepository _roleRepository;
+        private readonly IUsuarioRepository _userRepository;
 
-        public RoleService(IRoleRepository roleRepository, IUserRepository userRepository)
+        public RolService(IRolRepository roleRepository, IUsuarioRepository userRepository)
         {
             _roleRepository = roleRepository;
             _userRepository = userRepository;
         }
 
-        public async Task<List<RoleResponseDto>> GetAllAsync()
+        public async Task<List<RolResponseDto>> GetAllAsync()
         {
             var roles = await _roleRepository.GetAllAsync();
-            return roles.Select(r => new RoleResponseDto { Id = r.Id, Name = r.Name }).ToList();
+            return roles.Select(r => new RolResponseDto { Id = r.Id, Nombre = r.Nombre }).ToList();
         }
 
-        public async Task<RoleResponseDto> CreateAsync(RoleCreateDto dto)
+        public async Task<RolResponseDto> CreateAsync(CrearRolDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Name) || dto.Name.Length < 3 || dto.Name.Length > 100)
+            if (string.IsNullOrWhiteSpace(dto.Nombre) || dto.Nombre.Length < 3 || dto.Nombre.Length > 100)
                 throw new ArgumentException("El nombre debe tener entre 3 y 100 caracteres.");
-            if (!Regex.IsMatch(dto.Name, "^[a-zA-Z0-9_]+$"))
+            if (!Regex.IsMatch(dto.Nombre, "^[a-zA-Z0-9_]+$"))
                 throw new ArgumentException("El nombre solo puede contener letras, números y guiones bajos.");
-            if (ProtectedRoles.Contains(dto.Name, StringComparer.OrdinalIgnoreCase))
+            if (ProtectedRoles.Contains(dto.Nombre, StringComparer.OrdinalIgnoreCase))
                 throw new InvalidOperationException("No se puede crear un rol protegido.");
 
             var exists = (await _roleRepository.GetAllAsync())
-                .FirstOrDefault(r => r.Name.Equals(dto.Name, System.StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(r => r.Nombre.Equals(dto.Nombre, System.StringComparison.OrdinalIgnoreCase));
             if (exists != null)
-                throw new RoleNameExistsException(dto.Name);
+                throw new RoleNameExistsException(dto.Nombre);
 
-            var role = new Role { Name = dto.Name };
+            var role = new Rol { Nombre = dto.Nombre };
             await _roleRepository.AddAsync(role);
 
-            return new RoleResponseDto { Id = role.Id, Name = role.Name };
+            return new RolResponseDto { Id = role.Id, Nombre = role.Nombre };
         }
 
-        public async Task<RoleResponseDto> EditAsync(RoleEditDto dto)
+        public async Task<RolResponseDto> EditAsync(EditarRolDto dto)
         {
             var role = await _roleRepository.GetByIdAsync(dto.Id);
             if (role == null)
                 throw new RoleNotFoundException(dto.Id);
-            if (ProtectedRoles.Contains(role.Name, StringComparer.OrdinalIgnoreCase))
+            if (ProtectedRoles.Contains(role.Nombre, StringComparer.OrdinalIgnoreCase))
                 throw new InvalidOperationException("No se puede modificar un rol protegido.");
-            if (string.IsNullOrWhiteSpace(dto.Name) || dto.Name.Length < 3 || dto.Name.Length > 100)
+            if (string.IsNullOrWhiteSpace(dto.Nombre) || dto.Nombre.Length < 3 || dto.Nombre.Length > 100)
                 throw new ArgumentException("El nombre debe tener entre 3 y 100 caracteres.");
-            if (!Regex.IsMatch(dto.Name, "^[a-zA-Z0-9_]+$"))
+            if (!Regex.IsMatch(dto.Nombre, "^[a-zA-Z0-9_]+$"))
                 throw new ArgumentException("El nombre solo puede contener letras, números y guiones bajos.");
-            if (ProtectedRoles.Contains(dto.Name, StringComparer.OrdinalIgnoreCase))
+            if (ProtectedRoles.Contains(dto.Nombre, StringComparer.OrdinalIgnoreCase))
                 throw new InvalidOperationException("No se puede asignar un nombre de rol protegido.");
             var exists = (await _roleRepository.GetAllAsync())
-                .FirstOrDefault(r => r.Name.Equals(dto.Name, System.StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(r => r.Nombre.Equals(dto.Nombre, System.StringComparison.OrdinalIgnoreCase));
             if (exists != null && exists.Id != dto.Id)
-                throw new RoleNameExistsException(dto.Name);
+                throw new RoleNameExistsException(dto.Nombre);
 
-            role.Name = dto.Name;
+            role.Nombre = dto.Nombre;
             await _roleRepository.UpdateAsync(role);
 
-            return new RoleResponseDto { Id = role.Id, Name = role.Name };
+            return new RolResponseDto { Id = role.Id, Nombre = role.Nombre };
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -77,7 +77,7 @@ namespace Application.Services
             var role = await _roleRepository.GetByIdAsync(id);
             if (role == null)
                 throw new RoleNotFoundException(id);
-            if (ProtectedRoles.Contains(role.Name, StringComparer.OrdinalIgnoreCase))
+            if (ProtectedRoles.Contains(role.Nombre, StringComparer.OrdinalIgnoreCase))
                 throw new InvalidOperationException("No se puede eliminar un rol protegido.");
             var usersWithRole = await _userRepository.GetUsersByRoleIdAsync(id);
             if (usersWithRole.Any())

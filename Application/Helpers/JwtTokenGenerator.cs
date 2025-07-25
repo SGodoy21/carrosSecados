@@ -18,7 +18,7 @@ public class JwtTokenGenerator
         _configuration = configuration;
     }
 
-    public string GenerateToken(User user)
+    public string GenerarToken(Usuario usuario)
     {
         var secretKey = _configuration["JwtSettings:Key"];
         var issuer = _configuration["JwtSettings:Issuer"];
@@ -30,17 +30,17 @@ public class JwtTokenGenerator
 
             var claims = new List<Claim>
     {
-        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        new Claim(ClaimTypes.Name, user.Username),
-        new Claim(ClaimTypes.Email, user.Email ?? ""),
-        new Claim(ClaimTypes.Role, user.Role?.Name ?? "User"),
-        new Claim("FullName", $"{user.FirstName} {user.LastName}"),
+        new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+        new Claim(ClaimTypes.Name, usuario.NombreUsuario),
+        new Claim(ClaimTypes.Email, usuario.Email ?? ""),
+        new Claim(ClaimTypes.Role, usuario.Rol?.Nombre ?? "Usuario"),
+        new Claim("NombreApellido", $"{usuario.Nombre} {usuario.Apellido}"),
     };
 
-        if (user.GroupId != null)
-            claims.Add(new Claim("GroupId", user.GroupId.ToString()));
+        if (usuario.GrupoId != null)
+            claims.Add(new Claim("GrupoId", usuario.GrupoId.ToString()));
 
-        claims.Add(new Claim("IsEnabled", user.IsEnabled.ToString()));
+        claims.Add(new Claim("Habilitado", usuario.Habilitado.ToString()));
 
         var now = DateTime.UtcNow;
 

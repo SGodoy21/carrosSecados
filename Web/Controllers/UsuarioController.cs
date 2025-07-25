@@ -13,16 +13,16 @@ namespace Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UsuarioController : ControllerBase
 {
-    private readonly AuthenticateUser _authenticateUser;
+    private readonly AutenticacionUsuario _authenticateUser;
     private readonly JwtTokenGenerator _jwtTokenGenerator;
-    private readonly Application.Services.UserService _userService;
+    private readonly Application.Services.UsuarioService _userService;
 
-    public UserController(
-        AuthenticateUser authenticateUser,
+    public UsuarioController(
+        AutenticacionUsuario authenticateUser,
         JwtTokenGenerator jwtTokenGenerator,
-        Application.Services.UserService userService)
+        Application.Services.UsuarioService userService)
     {
         _authenticateUser = authenticateUser;
         _jwtTokenGenerator = jwtTokenGenerator;
@@ -30,12 +30,12 @@ public class UserController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpPut("change-role")]
-    public async Task<IActionResult> ChangeRole([FromBody] Shared.DTOs.ChangeUserRoleDto dto)
+    [HttpPut("change-rol")]
+    public async Task<IActionResult> ChangeRol([FromBody] Shared.DTOs.CambiarRolUsuarioDto dto)
     {
         try
         {
-            await _userService.ChangeUserRoleAsync(dto);
+            await _userService.ChangeUsuarioRolAsync(dto);
             return Ok(new { message = "Rol actualizado correctamente." });
         }
         catch (UserNotFoundException ex)
@@ -53,7 +53,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
+    public async Task<IActionResult> Register([FromBody] RegistrarUsuarioDto dto)
     {
         try
         {
@@ -79,31 +79,31 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
+    public async Task<IActionResult> Login([FromBody] UsuarioLoginDto dto)
     {
         try
         {
-            var user = await _authenticateUser.ExecuteAsync(dto.Username, dto.Password);
+            var user = await _authenticateUser.ExecuteAsync(dto.NombreUsuario, dto.Password);
             if (user is null)
                 return Unauthorized(new { error = "Credenciales inválidas o usuario deshabilitado." });
 
-            var token = _jwtTokenGenerator.GenerateToken(user);
+            var token = _jwtTokenGenerator.GenerarToken(user);
 
-            var response = new UserLoginResponseDto
+            var response = new UsuarioLoginResponseDto
             {
                 Token = token,
-                User = new UserDto
+                Usuario = new UsuarioDto
                 {
                     Id = user.Id,
-                    Username = user.Username,
-                    FullName = $"{user.FirstName} {user.LastName}",
+                    NombreUsuario = user.NombreUsuario,
+                    NombreApellido = $"{user.Nombre} {user.Apellido}",
                     Email = user.Email,
-                    RoleId = user.RoleId,
-                    GroupId = user.GroupId
+                    RolId = user.RolId,
+                    GrupoId = user.GrupoId
                 }
             };
 
-            return Ok(AxResponse<UserLoginResponseDto>.Ok(response, "Login successful."));
+            return Ok(AxResponse<UsuarioLoginResponseDto>.Ok(response, "Login successful."));
         }
         catch (Exception ex)
         {
@@ -117,7 +117,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            await _userService.DisableUserAsync(id);
+            await _userService.DisableUsuarioAsync(id);
             return Ok(new { message = "Usuario deshabilitado correctamente." });
         }
         catch (UserNotFoundException ex)
@@ -136,7 +136,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            await _userService.EnableUserAsync(id);
+            await _userService.EnableUsuarioAsync(id);
             return Ok(new { message = "Usuario habilitado correctamente." });
         }
         catch (UserNotFoundException ex)
@@ -155,7 +155,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            await _userService.DeleteUserAsync(id);
+            await _userService.DeleteUsuarioAsync(id);
             return NoContent();
         }
         catch (UserNotFoundException ex)
@@ -168,7 +168,7 @@ public class UserController : ControllerBase
     [HttpGet("list")]
     public async Task<IActionResult> List()
     {
-        var users = await _userService.GetAllUsersAsync();
+        var users = await _userService.GetAllUsuarioAsync();
         return Ok(users);
     }
 

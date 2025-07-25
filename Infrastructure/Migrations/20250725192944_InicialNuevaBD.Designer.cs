@@ -12,20 +12,20 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(LoginCleanContext))]
-    [Migration("20250722110451_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250725192944_InicialNuevaBD")]
+    partial class InicialNuevaBD
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "8.0.18")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.Role", b =>
+            modelBuilder.Entity("Domain.Entities.Rol", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,7 +33,7 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -46,16 +46,16 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Admin"
+                            Nombre = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "User"
+                            Nombre = "Usuario"
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
+            modelBuilder.Entity("Domain.Entities.Usuario", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,38 +63,46 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("ClientId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<int>("AccesosIncorrectos")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETUTCDATE()");
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("Apellido")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<long>("ClienteId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("FailedAccessCount")
+                    b.Property<DateTime>("FechaCreacion")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<DateTime?>("FechaExpiracion")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("GroupId")
+                    b.Property<int>("GrupoId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsEnabled")
+                    b.Property<bool>("Habilitado")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NombreUsuario")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -104,71 +112,63 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Phone")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("RecoveryToken")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int>("RolId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("TokenExpiresAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<string>("Telefono")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("Username")
+                    b.HasIndex("NombreUsuario")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.HasIndex("RolId");
+
+                    b.ToTable("Usuarios", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1L,
-                            ClientId = 1L,
-                            CreatedAt = new DateTime(2025, 7, 21, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "admin@example.com",
-                            FailedAccessCount = 0,
-                            FirstName = "System",
-                            GroupId = 1,
-                            IsEnabled = true,
-                            LastName = "Administrator",
-                            PasswordHash = "admin123",
-                            Phone = "1234567890",
+                            AccesosIncorrectos = 0,
+                            Apellido = "SRL",
+                            ClienteId = 1L,
+                            Email = "admin@aumax.com.ar",
+                            FechaCreacion = new DateTime(2025, 7, 25, 19, 29, 44, 61, DateTimeKind.Utc).AddTicks(2150),
+                            GrupoId = 1,
+                            Habilitado = true,
+                            Nombre = "Aumax",
+                            NombreUsuario = "Aumax",
+                            PasswordHash = "$2a$11$PYZWVVI5oRiGqd8cYLbi7eOpDAb171A2Eqv1VAfhMVzRtCrCwxoku",
                             RecoveryToken = "",
-                            RoleId = 1,
-                            Username = "admin"
+                            RolId = 1,
+                            Telefono = "1234567890"
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
+            modelBuilder.Entity("Domain.Entities.Usuario", b =>
                 {
-                    b.HasOne("Domain.Entities.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
+                    b.HasOne("Domain.Entities.Rol", "Rol")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("RolId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.Navigation("Rol");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Role", b =>
+            modelBuilder.Entity("Domain.Entities.Rol", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,23 +10,23 @@ using System;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = "Admin")]
-public class RoleController : ControllerBase
+public class RolController : ControllerBase
 {
-    private readonly RoleService _roleService;
+    private readonly RolService _roleService;
 
-    public RoleController(RoleService roleService)
+    public RolController(RolService roleService)
     {
         _roleService = roleService;
     }
 
     [HttpGet("list")]
-    public async Task<ActionResult<List<RoleResponseDto>>> GetAll()
+    public async Task<ActionResult<List<RolResponseDto>>> GetAll()
     {
         return await _roleService.GetAllAsync();
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> Create([FromBody] RoleCreateDto dto)
+    public async Task<IActionResult> Create([FromBody] CrearRolDto dto)
     {
         try
         {
@@ -44,7 +44,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpPut("edit/{id}")]
-    public async Task<IActionResult> Edit(int id, [FromBody] RoleEditDto dto)
+    public async Task<IActionResult> Edit(int id, [FromBody] EditarRolDto dto)
     {
         dto.Id = id;
         try

@@ -2,7 +2,7 @@ namespace Application.Interfaces
 {
     public interface IPasswordService
     {
-        string Hash(string password);
-        bool Verify(string password, string hash);
+        string Encriptar(string password);
+        bool Verificar(string password, string hash);
     }
 }

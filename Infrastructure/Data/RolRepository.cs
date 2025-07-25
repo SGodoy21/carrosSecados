@@ -7,39 +7,39 @@ using System.Linq;
 
 namespace Infrastructure.Data
 {
-    public class RoleRepository : IRoleRepository
+    public class RolRepository : IRolRepository
     {
         private readonly LoginCleanContext _context;
 
-        public RoleRepository(LoginCleanContext context)
+        public RolRepository(LoginCleanContext context)
         {
             _context = context;
         }
 
-        public async Task<List<Role>> GetAllAsync()
+        public async Task<List<Rol>> GetAllAsync()
             => await _context.Roles.ToListAsync();
 
-        public async Task<Role> GetByIdAsync(int id)
+        public async Task<Rol> GetByIdAsync(int id)
             => await _context.Roles.FirstOrDefaultAsync(r => r.Id == id);
 
-        public async Task<Role> GetByNameAsync(string name)
-            => await _context.Roles.FirstOrDefaultAsync(r => r.Name == name);
+        public async Task<Rol> GetByNombreAsync(string nombre)
+            => await _context.Roles.FirstOrDefaultAsync(r => r.Nombre == nombre);
 
-        public async Task AddAsync(Role role)
+        public async Task AddAsync(Rol rol)
         {
-            _context.Roles.Add(role);
+            _context.Roles.Add(rol);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Role role)
+        public async Task UpdateAsync(Rol rol)
         {
-            _context.Roles.Update(role);
+            _context.Roles.Update(rol);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Role role)
+        public async Task DeleteAsync(Rol rol)
         {
-            _context.Roles.Remove(role);
+            _context.Roles.Remove(rol);
             await _context.SaveChangesAsync();
         }
     }
