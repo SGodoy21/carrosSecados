@@ -31,26 +31,29 @@ public class UsuarioController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpPut("change-rol")]
-    public async Task<IActionResult> ChangeRol([FromBody] Shared.DTOs.CambiarRolUsuarioDto dto)
+    public async Task<IActionResult> ChangeRol([FromBody] CambiarRolUsuarioDto dto)
     {
         try
         {
             await _userService.ChangeUsuarioRolAsync(dto);
             return Ok(new { message = "Rol actualizado correctamente." });
         }
-        catch (UserNotFoundException ex)
+        catch (AppException ex)
         {
-            return NotFound(new { error = ex.Message });
-        }
-        catch (RoleNotFoundException ex)
-        {
-            return NotFound(new { error = ex.Message });
+            if (ex.Message.Contains("Usuario") && ex.Message.Contains("no encontrado"))
+                return NotFound(new { error = ex.Message });
+
+            if (ex.Message.Contains("Rol") && ex.Message.Contains("no encontrado"))
+                return NotFound(new { error = ex.Message });
+
+            return BadRequest(new { error = ex.Message });
         }
         catch (Exception ex)
         {
             return BadRequest(new { error = ex.Message });
         }
     }
+
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegistrarUsuarioDto dto)
@@ -60,23 +63,25 @@ public class UsuarioController : ControllerBase
             await _userService.RegistrarUsuarioAsync(dto);
             return Ok(new { message = "Usuario registrado correctamente." });
         }
-        catch (InvalidPasswordException ex)
+        catch (AppException ex)
         {
-            return BadRequest(new { error = ex.Message });
-        }
-        catch (InvalidEmailException ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-        catch (UsernameExistsException ex)
-        {
-            return Conflict(new { error = ex.Message });
+            if (ex.Message.Contains("contraseña") || ex.Message.Contains("password"))
+                return BadRequest(new { error = ex.Message });
+
+            if (ex.Message.Contains("email") && ex.Message.Contains("inválido"))
+                return BadRequest(new { error = ex.Message });
+
+            if (ex.Message.Contains("usuario") && ex.Message.Contains("ya está registrado"))
+                return Conflict(new { error = ex.Message });
+
+            return BadRequest(new { error = ex.Message }); // fallback
         }
         catch (Exception ex)
         {
             return BadRequest(new { error = ex.Message });
         }
     }
+
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UsuarioLoginDto dto)
@@ -120,15 +125,22 @@ public class UsuarioController : ControllerBase
             await _userService.DisableUsuarioAsync(id);
             return Ok(new { message = "Usuario deshabilitado correctamente." });
         }
-        catch (UserNotFoundException ex)
+        catch (AppException ex)
         {
-            return NotFound(new { error = ex.Message });
+            if (ex.Message.Contains("no encontrado"))
+                return NotFound(new { error = ex.Message });
+
+            if (ex.Message.Contains("no puede ser deshabilitado")) // ajustá según tu mensaje exacto
+                return Conflict(new { error = ex.Message });
+
+            return BadRequest(new { error = ex.Message });
         }
-        catch (InvalidOperationException ex)
+        catch (Exception ex)
         {
-            return Conflict(new { error = ex.Message });
+            return BadRequest(new { error = ex.Message });
         }
     }
+
 
     [Authorize(Roles = "Admin")]
     [HttpPut("enable/{id}")]
@@ -139,15 +151,22 @@ public class UsuarioController : ControllerBase
             await _userService.EnableUsuarioAsync(id);
             return Ok(new { message = "Usuario habilitado correctamente." });
         }
-        catch (UserNotFoundException ex)
+        catch (AppException ex)
         {
-            return NotFound(new { error = ex.Message });
+            if (ex.Message.Contains("no encontrado"))
+                return NotFound(new { error = ex.Message });
+
+            if (ex.Message.Contains("no puede ser habilitado"))
+                return Conflict(new { error = ex.Message });
+
+            return BadRequest(new { error = ex.Message }); // fallback
         }
-        catch (InvalidOperationException ex)
+        catch (Exception ex)
         {
-            return Conflict(new { error = ex.Message });
+            return BadRequest(new { error = ex.Message });
         }
     }
+
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("delete/{id}")]
@@ -158,11 +177,19 @@ public class UsuarioController : ControllerBase
             await _userService.DeleteUsuarioAsync(id);
             return NoContent();
         }
-        catch (UserNotFoundException ex)
+        catch (AppException ex)
         {
-            return NotFound(new { error = ex.Message });
+            if (ex.Message.Contains("no encontrado"))
+                return NotFound(new { error = ex.Message });
+
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message });
         }
     }
+
 
     [Authorize(Roles = "Admin")]
     [HttpGet("list")]
@@ -181,13 +208,20 @@ public class UsuarioController : ControllerBase
             await _userService.ChangePasswordAsync(id, newPassword);
             return Ok(new { message = "Contraseña actualizada correctamente." });
         }
-        catch (UserNotFoundException ex)
+        catch (AppException ex)
         {
-            return NotFound(new { error = ex.Message });
+            if (ex.Message.Contains("no encontrado"))
+                return NotFound(new { error = ex.Message });
+
+            if (ex.Message.Contains("contraseña") || ex.Message.Contains("password"))
+                return BadRequest(new { error = ex.Message });
+
+            return BadRequest(new { error = ex.Message });
         }
-        catch (InvalidPasswordException ex)
+        catch (Exception ex)
         {
             return BadRequest(new { error = ex.Message });
         }
     }
+
 }

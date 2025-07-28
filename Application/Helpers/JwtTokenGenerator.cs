@@ -23,7 +23,7 @@ public class JwtTokenGenerator
         var secretKey = _configuration["JwtSettings:Key"];
         var issuer = _configuration["JwtSettings:Issuer"];
         var audience = _configuration["JwtSettings:Audience"];
-        var expirationMinutes = _configuration.GetValue<int>("JwtSettings:ExpirationInMinutes", 120);
+        var expirationDays = _configuration.GetValue<int>("JwtSettings:ExpirationInDays", 30);
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -49,7 +49,7 @@ public class JwtTokenGenerator
             Subject = new ClaimsIdentity(claims),
             NotBefore = now,
             IssuedAt = now,
-            Expires = now.AddMinutes(expirationMinutes),
+            Expires = now.AddDays(expirationDays),
             SigningCredentials = credentials,
             Issuer = issuer,
             Audience = audience

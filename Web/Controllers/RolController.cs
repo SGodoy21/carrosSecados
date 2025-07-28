@@ -33,15 +33,19 @@ public class RolController : ControllerBase
             var result = await _roleService.CreateAsync(dto);
             return Ok(result);
         }
-        catch (RoleNameExistsException ex)
+        catch (AppException ex)
         {
-            return Conflict(new { error = ex.Message });
+            if (ex.Message.Contains("ya existe"))
+                return Conflict(new { error = ex.Message });
+
+            return BadRequest(new { error = ex.Message });
         }
         catch (ArgumentException ex)
         {
             return BadRequest(new { error = ex.Message });
         }
     }
+
 
     [HttpPut("edit/{id}")]
     public async Task<IActionResult> Edit(int id, [FromBody] EditarRolDto dto)
@@ -52,19 +56,23 @@ public class RolController : ControllerBase
             var result = await _roleService.EditAsync(dto);
             return Ok(result);
         }
-        catch (RoleNotFoundException ex)
+        catch (AppException ex)
         {
-            return NotFound(new { error = ex.Message });
-        }
-        catch (RoleNameExistsException ex)
-        {
-            return Conflict(new { error = ex.Message });
+            // Opcional: lógica por mensaje si querés diferenciar
+            if (ex.Message.Contains("no encontrado"))
+                return NotFound(new { error = ex.Message });
+
+            if (ex.Message.Contains("ya existe"))
+                return Conflict(new { error = ex.Message });
+
+            return BadRequest(new { error = ex.Message });
         }
         catch (ArgumentException ex)
         {
             return BadRequest(new { error = ex.Message });
         }
     }
+
 
     [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
@@ -74,13 +82,16 @@ public class RolController : ControllerBase
             await _roleService.DeleteAsync(id);
             return NoContent();
         }
-        catch (RoleNotFoundException ex)
+        catch (AppException ex)
         {
-            return NotFound(new { error = ex.Message });
-        }
-        catch (RoleInUseException ex)
-        {
-            return Conflict(new { error = ex.Message });
+            if (ex.Message.Contains("no encontrado"))
+                return NotFound(new { error = ex.Message });
+
+            if (ex.Message.Contains("asignado a usuarios"))
+                return Conflict(new { error = ex.Message });
+
+            return BadRequest(new { error = ex.Message }); // fallback
         }
     }
+
 }

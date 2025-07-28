@@ -40,7 +40,7 @@ namespace Application.Services
             var exists = (await _roleRepository.GetAllAsync())
                 .FirstOrDefault(r => r.Nombre.Equals(dto.Nombre, System.StringComparison.OrdinalIgnoreCase));
             if (exists != null)
-                throw new RoleNameExistsException(dto.Nombre);
+                throw AppException.RoleNameExists(dto.Nombre);
 
             var role = new Rol { Nombre = dto.Nombre };
             await _roleRepository.AddAsync(role);
@@ -52,7 +52,7 @@ namespace Application.Services
         {
             var role = await _roleRepository.GetByIdAsync(dto.Id);
             if (role == null)
-                throw new RoleNotFoundException(dto.Id);
+                throw AppException.RoleNotFound(dto.Id);
             if (ProtectedRoles.Contains(role.Nombre, StringComparer.OrdinalIgnoreCase))
                 throw new InvalidOperationException("No se puede modificar un rol protegido.");
             if (string.IsNullOrWhiteSpace(dto.Nombre) || dto.Nombre.Length < 3 || dto.Nombre.Length > 100)
@@ -64,7 +64,7 @@ namespace Application.Services
             var exists = (await _roleRepository.GetAllAsync())
                 .FirstOrDefault(r => r.Nombre.Equals(dto.Nombre, System.StringComparison.OrdinalIgnoreCase));
             if (exists != null && exists.Id != dto.Id)
-                throw new RoleNameExistsException(dto.Nombre);
+                throw AppException.RoleNameExists(dto.Nombre);
 
             role.Nombre = dto.Nombre;
             await _roleRepository.UpdateAsync(role);
@@ -76,12 +76,12 @@ namespace Application.Services
         {
             var role = await _roleRepository.GetByIdAsync(id);
             if (role == null)
-                throw new RoleNotFoundException(id);
+                throw AppException.RoleNotFound(id);
             if (ProtectedRoles.Contains(role.Nombre, StringComparer.OrdinalIgnoreCase))
                 throw new InvalidOperationException("No se puede eliminar un rol protegido.");
             var usersWithRole = await _userRepository.GetUsersByRoleIdAsync(id);
             if (usersWithRole.Any())
-                throw new RoleInUseException(id);
+                throw AppException.RoleInUse(id);
 
             await _roleRepository.DeleteAsync(role);
             return true;

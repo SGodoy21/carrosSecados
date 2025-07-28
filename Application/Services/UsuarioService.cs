@@ -26,11 +26,11 @@ namespace Application.Services
         {
             var user = await _usuarioRepository.GetByIdAsync(dto.UsuarioId);
             if (user == null)
-                throw new UserNotFoundException((int)dto.UsuarioId);
+                throw AppException.UserNotFound((int)dto.UsuarioId);
 
             var role = await _rolRepository.GetByIdAsync(dto.RolId);
             if (role == null)
-                throw new RoleNotFoundException(dto.RolId);
+                throw AppException.RoleNotFound(dto.RolId);
 
             user.RolId = dto.RolId;
             await _usuarioRepository.UpdateAsync(user);
@@ -41,13 +41,13 @@ namespace Application.Services
         {
             // Validaciones mínimas
             if (string.IsNullOrWhiteSpace(dto.Password) || dto.Password.Length < 8)
-                throw new InvalidPasswordException();
+                throw AppException.InvalidPassword();
             if (string.IsNullOrWhiteSpace(dto.Email) || !dto.Email.Contains("@"))
-                throw new InvalidEmailException(dto.Email);
+                throw AppException.InvalidEmail(dto.Email);
 
             // Verificar unicidad
             if (await _usuarioRepository.GetByUsernameAsync(dto.NombreUsuario) != null)
-                throw new UsernameExistsException(dto.NombreUsuario);
+                throw AppException.UsernameExists(dto.NombreUsuario);
             // Si tienes método para email, úsalo:
             // if (await _usuarioRepository.GetByEmailAsync(dto.Email) != null)
             //     throw new InvalidEmailException(dto.Email);
@@ -87,7 +87,7 @@ namespace Application.Services
         {
             var user = await _usuarioRepository.GetByIdAsync(userId);
             if (user == null)
-                throw new UserNotFoundException((int)userId);
+                throw AppException.UserNotFound((int)userId);
             if (!user.Habilitado)
                 throw new InvalidOperationException("El usuario ya está deshabilitado.");
 
@@ -100,7 +100,7 @@ namespace Application.Services
         {
             var user = await _usuarioRepository.GetByIdAsync(userId);
             if (user == null)
-                throw new UserNotFoundException((int)userId);
+                throw AppException.UserNotFound((int)userId);
 
             await _usuarioRepository.DeleteAsync(user);
             return true;
@@ -110,7 +110,7 @@ namespace Application.Services
         {
             var user = await _usuarioRepository.GetByIdAsync(userId);
             if (user == null)
-                throw new UserNotFoundException((int)userId);
+                throw AppException.UserNotFound((int)userId);
             if (user.Habilitado)
                 throw new InvalidOperationException("El usuario ya está habilitado.");
 
@@ -137,10 +137,10 @@ namespace Application.Services
         public async Task<bool> ChangePasswordAsync(long userId, string newPassword)
         {
             if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < 8)
-                throw new InvalidPasswordException();
+                throw AppException.InvalidPassword();
             var user = await _usuarioRepository.GetByIdAsync(userId);
             if (user == null)
-                throw new UserNotFoundException((int)userId);
+                throw AppException.UserNotFound((int)userId);
             user.PasswordHash = _passwordService.Encriptar(newPassword);
             await _usuarioRepository.UpdateAsync(user);
             return true;
