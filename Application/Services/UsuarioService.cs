@@ -64,6 +64,8 @@ namespace Application.Services
                 Apellido = dto.Apellido,
                 Telefono = dto.Telefono,
                 Email = dto.Email,
+                GrupoId = dto.GrupoId,
+                ClienteId = dto.clienteId,
                 Habilitado = true,
                 AccesosIncorrectos = 0,
                 RecoveryToken = null,
