@@ -1,96 +1,103 @@
 using Application.Exceptions;
 using Application.Helpers;
+using Application.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared;
 using Shared.DTOs;
 using Shared.Responses;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
-using System.Linq;
-using System.Security.Claims;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UsuarioController : ControllerBase
+[Tags("Usuario")]
+public class UsuarioController(
+    AutenticacionUsuario authenticateUser,
+    JwtTokenGenerator jwtTokenGenerator,
+    UsuarioService userService) : ControllerBase
 {
-    private readonly AutenticacionUsuario _authenticateUser;
-    private readonly JwtTokenGenerator _jwtTokenGenerator;
-    private readonly Application.Services.UsuarioService _userService;
-
-    public UsuarioController(
-        AutenticacionUsuario authenticateUser,
-        JwtTokenGenerator jwtTokenGenerator,
-        Application.Services.UsuarioService userService)
-    {
-        _authenticateUser = authenticateUser;
-        _jwtTokenGenerator = jwtTokenGenerator;
-        _userService = userService;
-    }
+    private readonly AutenticacionUsuario _authenticateUser = authenticateUser;
+    private readonly JwtTokenGenerator _jwtTokenGenerator = jwtTokenGenerator;
+    private readonly UsuarioService _userService = userService;
 
     [Authorize(Roles = "Admin")]
     [HttpPut("change-rol")]
-    public async Task<IActionResult> ChangeRol([FromBody] CambiarRolUsuarioDto dto)
+    [SwaggerOperation(Summary = "ChangeRol", Description = "Cambia el rol asignado a un usuario.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AxResponse<Unit>>> ChangeRol([FromBody] CambiarRolUsuarioDto dto)
     {
         try
         {
             await _userService.ChangeUsuarioRolAsync(dto);
-            return Ok(new { message = "Rol actualizado correctamente." });
+            return Ok(AxResponse<Unit>.Ok(Unit.Value, "Rol actualizado correctamente."));
         }
         catch (AppException ex)
         {
             if (ex.Message.Contains("Usuario") && ex.Message.Contains("no encontrado"))
-                return NotFound(new { error = ex.Message });
+                return NotFound(AxResponse<Unit>.Fail(ex.Message));
 
             if (ex.Message.Contains("Rol") && ex.Message.Contains("no encontrado"))
-                return NotFound(new { error = ex.Message });
+                return NotFound(AxResponse<Unit>.Fail(ex.Message));
 
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message));
         }
         catch (Exception ex)
         {
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message));
         }
     }
 
-
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegistrarUsuarioDto dto)
+    [SwaggerOperation(Summary = "Register", Description = "Registra un nuevo usuario en el sistema.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AxResponse<Unit>>> Register([FromBody] RegistrarUsuarioDto dto)
     {
         try
         {
             await _userService.RegistrarUsuarioAsync(dto);
-            return Ok(new { message = "Usuario registrado correctamente." });
+            return Ok(AxResponse<Unit>.Ok(Unit.Value, "Usuario registrado correctamente."));
         }
         catch (AppException ex)
         {
+            if (ex.Message.Contains("usuario") && ex.Message.Contains("ya está registrado"))
+                return Conflict(AxResponse<Unit>.Fail(ex.Message));
+
             if (ex.Message.Contains("contraseña") || ex.Message.Contains("password"))
-                return BadRequest(new { error = ex.Message });
+                return BadRequest(AxResponse<Unit>.Fail(ex.Message));
 
             if (ex.Message.Contains("email") && ex.Message.Contains("inválido"))
-                return BadRequest(new { error = ex.Message });
+                return BadRequest(AxResponse<Unit>.Fail(ex.Message));
 
-            if (ex.Message.Contains("usuario") && ex.Message.Contains("ya está registrado"))
-                return Conflict(new { error = ex.Message });
-
-            return BadRequest(new { error = ex.Message }); // fallback
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message)); // fallback
         }
         catch (Exception ex)
         {
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message));
         }
     }
 
-
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UsuarioLoginDto dto)
+    [SwaggerOperation(Summary = "Login", Description = "Autentica un usuario y devuelve un token JWT.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AxResponse<UsuarioLoginResponseDto>>> Login([FromBody] UsuarioLoginDto dto)
     {
         try
         {
             var user = await _authenticateUser.ExecuteAsync(dto.NombreUsuario, dto.Password);
             if (user is null)
-                return Unauthorized(new { error = "Credenciales inválidas o usuario deshabilitado." });
+                return Unauthorized(AxResponse<UsuarioLoginResponseDto>.Fail("Credenciales inválidas o usuario deshabilitado."));
 
             var token = _jwtTokenGenerator.GenerarToken(user);
 
@@ -112,116 +119,133 @@ public class UsuarioController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<UsuarioLoginResponseDto>.Fail(ex.Message));
         }
     }
 
     [Authorize(Roles = "Admin")]
     [HttpPut("disable/{id}")]
-    public async Task<IActionResult> Disable(long id)
+    [SwaggerOperation(Summary = "Disable", Description = "Deshabilita un usuario por ID.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AxResponse<Unit>>> Disable([FromRoute] long id)
     {
         try
         {
             await _userService.DisableUsuarioAsync(id);
-            return Ok(new { message = "Usuario deshabilitado correctamente." });
+            return Ok(AxResponse<Unit>.Ok(Unit.Value, "Usuario deshabilitado correctamente."));
         }
         catch (AppException ex)
         {
             if (ex.Message.Contains("no encontrado"))
-                return NotFound(new { error = ex.Message });
+                return NotFound(AxResponse<Unit>.Fail(ex.Message));
 
-            if (ex.Message.Contains("no puede ser deshabilitado")) // ajustá según tu mensaje exacto
-                return Conflict(new { error = ex.Message });
+            if (ex.Message.Contains("no puede ser deshabilitado"))
+                return Conflict(AxResponse<Unit>.Fail(ex.Message));
 
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message));
         }
         catch (Exception ex)
         {
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message));
         }
     }
 
-
     [Authorize(Roles = "Admin")]
     [HttpPut("enable/{id}")]
-    public async Task<IActionResult> Enable(long id)
+    [SwaggerOperation(Summary = "Enable", Description = "Habilita un usuario por ID.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AxResponse<Unit>>> Enable([FromRoute] long id)
     {
         try
         {
             await _userService.EnableUsuarioAsync(id);
-            return Ok(new { message = "Usuario habilitado correctamente." });
+            return Ok(AxResponse<Unit>.Ok(Unit.Value, "Usuario habilitado correctamente."));
         }
         catch (AppException ex)
         {
             if (ex.Message.Contains("no encontrado"))
-                return NotFound(new { error = ex.Message });
+                return NotFound(AxResponse<Unit>.Fail(ex.Message));
 
             if (ex.Message.Contains("no puede ser habilitado"))
-                return Conflict(new { error = ex.Message });
+                return Conflict(AxResponse<Unit>.Fail(ex.Message));
 
-            return BadRequest(new { error = ex.Message }); // fallback
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message)); // fallback
         }
         catch (Exception ex)
         {
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message));
         }
     }
 
-
     [Authorize(Roles = "Admin")]
     [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> Delete(long id)
+    [SwaggerOperation(Summary = "Delete", Description = "Elimina un usuario por ID.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AxResponse<Unit>>> Delete([FromRoute] long id)
     {
         try
         {
             await _userService.DeleteUsuarioAsync(id);
-            return NoContent();
+            // Para mantener consistencia de wrapper, devolvemos 200 con mensaje.
+            return Ok(AxResponse<Unit>.Ok(Unit.Value, "Usuario eliminado correctamente."));
         }
         catch (AppException ex)
         {
             if (ex.Message.Contains("no encontrado"))
-                return NotFound(new { error = ex.Message });
+                return NotFound(AxResponse<Unit>.Fail(ex.Message));
 
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message));
         }
         catch (Exception ex)
         {
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message));
         }
     }
 
-
     [Authorize(Roles = "Admin")]
     [HttpGet("list")]
-    public async Task<IActionResult> List()
+    [SwaggerOperation(Summary = "List", Description = "Devuelve la lista de todos los usuarios registrados.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<AxResponse<List<UsuarioDto>>>> List()
     {
         var users = await _userService.GetAllUsuarioAsync();
-        return Ok(users);
+        return Ok(AxResponse<List<UsuarioDto>>.Ok(users, "Usuarios obtenidos correctamente."));
     }
 
     [Authorize(Roles = "Admin")]
     [HttpPut("change-password/{id}")]
-    public async Task<IActionResult> ChangePassword(long id, [FromBody] string newPassword)
+    [SwaggerOperation(Summary = "ChangePassword", Description = "Cambia la contraseña de un usuario.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AxResponse<Unit>>> ChangePassword([FromRoute] long id, [FromBody] string newPassword)
     {
         try
         {
             await _userService.ChangePasswordAsync(id, newPassword);
-            return Ok(new { message = "Contraseña actualizada correctamente." });
+            return Ok(AxResponse<Unit>.Ok(Unit.Value, "Contraseña actualizada correctamente."));
         }
         catch (AppException ex)
         {
             if (ex.Message.Contains("no encontrado"))
-                return NotFound(new { error = ex.Message });
+                return NotFound(AxResponse<Unit>.Fail(ex.Message));
 
             if (ex.Message.Contains("contraseña") || ex.Message.Contains("password"))
-                return BadRequest(new { error = ex.Message });
+                return BadRequest(AxResponse<Unit>.Fail(ex.Message));
 
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message));
         }
         catch (Exception ex)
         {
-            return BadRequest(new { error = ex.Message });
+            return BadRequest(AxResponse<Unit>.Fail(ex.Message));
         }
     }
-
 }

@@ -1,6 +1,7 @@
 using Application.Helpers;
-using Application.Interfaces;
-using Infrastructure.Data;
+using Application.Interfaces.Auth;
+using Application.Services.Auth;
+using Infrastructure.Data.Auth;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IoC;
@@ -13,9 +14,12 @@ public static class DependencyInjection
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<JwtTokenGenerator>();
         services.AddSingleton<IPasswordService, BcryptPasswordService>();
-        services.AddScoped<Application.Services.UsuarioService>();
+        services.AddScoped<UsuarioService>();
         services.AddScoped<IRolRepository, RolRepository>();
-        services.AddScoped<Application.Services.RolService>();
+        services.AddScoped<RolService>();
+
+ 
+
         return services;
     }
 }

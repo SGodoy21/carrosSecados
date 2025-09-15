@@ -1,2 +1,2 @@
-dotnet ef migrations add InicialNuevaBD --context LoginCleanContext --project Infrastructure --startup-project Web
-dotnet ef database update --context LoginCleanContext --project Infrastructure --startup-project Web
+dotnet ef migrations add InicialNuevaBD --context axAuditContext --project Infrastructure --startup-project Web
+dotnet ef database update --context axAuditContext --project Infrastructure --startup-project Web

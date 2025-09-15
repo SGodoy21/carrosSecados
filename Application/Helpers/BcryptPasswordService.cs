@@ -1,5 +1,4 @@
-using Application.Interfaces;
-using BCrypt.Net;
+using Application.Interfaces.Auth;
 
 namespace Application.Helpers
 {

@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -9,14 +9,9 @@ using System.Text;
 
 namespace Application.Helpers;
 
-public class JwtTokenGenerator
+public class JwtTokenGenerator(IConfiguration configuration)
 {
-    private readonly IConfiguration _configuration;
-
-    public JwtTokenGenerator(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    private readonly IConfiguration _configuration = configuration;
 
     public string GenerarToken(Usuario usuario)
     {
@@ -28,7 +23,7 @@ public class JwtTokenGenerator
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new List<Claim>
+        var claims = new List<Claim>
     {
         new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
         new Claim(ClaimTypes.Name, usuario.NombreUsuario),
@@ -55,10 +50,8 @@ public class JwtTokenGenerator
             Audience = audience
         };
 
-
         var handler = new JwtSecurityTokenHandler();
         var token = handler.CreateToken(tokenDescriptor);
         return handler.WriteToken(token);
     }
-
 }

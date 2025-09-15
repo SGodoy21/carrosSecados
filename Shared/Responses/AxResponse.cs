@@ -3,13 +3,14 @@ namespace Shared.Responses;
 /// <summary>
 /// Standard API response wrapper.
 /// </summary>
-public class AxResponse<T>
+public sealed class AxResponse<T>
 {
-    public bool Success { get; set; }
-    public string Message { get; set; } = string.Empty;
-    public T? Data { get; set; }
+    public bool Success { get; init; }
+    public string? Message { get; init; }
+    public T? Data { get; init; }
 
-    public static AxResponse<T> Ok(T data, string message = "") => new()
+    // Ok con data opcional y mensaje opcional
+    public static AxResponse<T> Ok(T? data = default, string? message = null) => new()
     {
         Success = true,
         Message = message,
@@ -19,7 +20,7 @@ public class AxResponse<T>
     public static AxResponse<T> Fail(string message) => new()
     {
         Success = false,
-        Message = message
+        Message = message,
+        Data = default
     };
 }
-    

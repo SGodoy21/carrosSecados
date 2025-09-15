@@ -1,26 +1,18 @@
-using Application.Helpers;
-using Application.Interfaces;
-using Domain.Entities;
-using System.Threading.Tasks;
 using Application.Exceptions;
+using Application.Interfaces.Auth;
+using Domain.Entities.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Application.Services
+namespace Application.Services.Auth
 {
-    public class UsuarioService
+    public class UsuarioService(IUsuarioRepository userRepository, IPasswordService passwordService, IRolRepository roleRepository)
     {
-        private readonly IUsuarioRepository _usuarioRepository;
-        private readonly IPasswordService _passwordService;
-        private readonly IRolRepository _rolRepository;
-
-        public UsuarioService(IUsuarioRepository userRepository, IPasswordService passwordService, IRolRepository roleRepository)
-        {
-            _usuarioRepository = userRepository;
-            _passwordService = passwordService;
-            _rolRepository = roleRepository;
-        }
+        private readonly IUsuarioRepository _usuarioRepository = userRepository;
+        private readonly IPasswordService _passwordService = passwordService;
+        private readonly IRolRepository _rolRepository = roleRepository;
 
         public async Task<bool> ChangeUsuarioRolAsync(Shared.DTOs.CambiarRolUsuarioDto dto)
         {
@@ -56,7 +48,7 @@ namespace Application.Services
             var passwordHash = _passwordService.Encriptar(dto.Password);
 
             // Mapear manualmente DTO a entidad
-            var user = new Domain.Entities.Usuario
+            var user = new Usuario
             {
                 NombreUsuario = dto.NombreUsuario,
                 PasswordHash = passwordHash,
@@ -64,13 +56,13 @@ namespace Application.Services
                 Apellido = dto.Apellido,
                 Telefono = dto.Telefono,
                 Email = dto.Email,
-                GrupoId = dto.GrupoId,
-                ClienteId = dto.clienteId,
                 Habilitado = true,
                 AccesosIncorrectos = 0,
                 RecoveryToken = null,
                 FechaExpiracion = null,
-                FechaCreacion = System.DateTime.UtcNow,
+                FechaCreacion = DateTime.UtcNow,
+                GrupoId = dto.GrupoId,
+                ClienteId = dto.clienteId,
                 RolId = 2 // Rol por defecto: Usuario
             };
 

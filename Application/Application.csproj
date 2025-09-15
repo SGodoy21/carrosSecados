@@ -3,6 +3,32 @@
 		<TargetFramework>net8.0</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="Interfaces\CargaVagones\**" />
+	  <Compile Remove="Interfaces\WinCCAuditV74\**" />
+	  <Compile Remove="Services\CargaVagones\**" />
+	  <Compile Remove="Services\WinCCAuditV74\**" />
+	  <Compile Remove="UseCases\CargaVagones\**" />
+	  <Compile Remove="UseCases\DatosPlantas\**" />
+	  <Compile Remove="UseCases\WinCCAuditV74\**" />
+	  <Compile Remove="UseCases\WinCCAudit\**" />
+	  <EmbeddedResource Remove="Interfaces\CargaVagones\**" />
+	  <EmbeddedResource Remove="Interfaces\WinCCAuditV74\**" />
+	  <EmbeddedResource Remove="Services\CargaVagones\**" />
+	  <EmbeddedResource Remove="Services\WinCCAuditV74\**" />
+	  <EmbeddedResource Remove="UseCases\CargaVagones\**" />
+	  <EmbeddedResource Remove="UseCases\DatosPlantas\**" />
+	  <EmbeddedResource Remove="UseCases\WinCCAuditV74\**" />
+	  <EmbeddedResource Remove="UseCases\WinCCAudit\**" />
+	  <None Remove="Interfaces\CargaVagones\**" />
+	  <None Remove="Interfaces\WinCCAuditV74\**" />
+	  <None Remove="Services\CargaVagones\**" />
+	  <None Remove="Services\WinCCAuditV74\**" />
+	  <None Remove="UseCases\CargaVagones\**" />
+	  <None Remove="UseCases\DatosPlantas\**" />
+	  <None Remove="UseCases\WinCCAuditV74\**" />
+	  <None Remove="UseCases\WinCCAudit\**" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.18" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.18" />

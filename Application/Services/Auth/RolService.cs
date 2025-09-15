@@ -1,26 +1,20 @@
-using Application.Interfaces;
-using Domain.Entities;
+using Application.Exceptions;
+using Application.Interfaces.Auth;
+using Domain.Entities.Auth;
 using Shared.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System;
 using System.Text.RegularExpressions;
-using Application.Exceptions;
+using System.Threading.Tasks;
 
-namespace Application.Services
+namespace Application.Services.Auth
 {
-    public class RolService
+    public class RolService(IRolRepository roleRepository, IUsuarioRepository userRepository)
     {
         private static readonly string[] ProtectedRoles = new[] { "Admin", "SuperAdmin" };
-        private readonly IRolRepository _roleRepository;
-        private readonly IUsuarioRepository _userRepository;
-
-        public RolService(IRolRepository roleRepository, IUsuarioRepository userRepository)
-        {
-            _roleRepository = roleRepository;
-            _userRepository = userRepository;
-        }
+        private readonly IRolRepository _roleRepository = roleRepository;
+        private readonly IUsuarioRepository _userRepository = userRepository;
 
         public async Task<List<RolResponseDto>> GetAllAsync()
         {
@@ -38,7 +32,7 @@ namespace Application.Services
                 throw new InvalidOperationException("No se puede crear un rol protegido.");
 
             var exists = (await _roleRepository.GetAllAsync())
-                .FirstOrDefault(r => r.Nombre.Equals(dto.Nombre, System.StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(r => r.Nombre.Equals(dto.Nombre, StringComparison.OrdinalIgnoreCase));
             if (exists != null)
                 throw AppException.RoleNameExists(dto.Nombre);
 
@@ -62,7 +56,7 @@ namespace Application.Services
             if (ProtectedRoles.Contains(dto.Nombre, StringComparer.OrdinalIgnoreCase))
                 throw new InvalidOperationException("No se puede asignar un nombre de rol protegido.");
             var exists = (await _roleRepository.GetAllAsync())
-                .FirstOrDefault(r => r.Nombre.Equals(dto.Nombre, System.StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(r => r.Nombre.Equals(dto.Nombre, StringComparison.OrdinalIgnoreCase));
             if (exists != null && exists.Id != dto.Id)
                 throw AppException.RoleNameExists(dto.Nombre);
 
@@ -88,4 +82,3 @@ namespace Application.Services
         }
     }
 }
-

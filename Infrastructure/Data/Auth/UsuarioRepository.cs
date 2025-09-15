@@ -1,20 +1,15 @@
-using Application.Interfaces;
-using Domain.Entities;
+using Application.Interfaces.Auth;
+using Domain.Entities.Auth;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Infrastructure.Data
+namespace Infrastructure.Data.Auth
 {
-    public class UsuarioRepository : IUsuarioRepository
+    public class UsuarioRepository(axAuditContext context) : IUsuarioRepository
     {
-        private readonly LoginCleanContext _context;
-
-        public UsuarioRepository(LoginCleanContext context)
-        {
-            _context = context;
-        }
+        private readonly axAuditContext _context = context;
 
         public async Task<Usuario> GetByIdAsync(long usuarioId)
         {

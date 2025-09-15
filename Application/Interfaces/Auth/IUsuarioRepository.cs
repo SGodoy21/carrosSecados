@@ -1,8 +1,8 @@
-using Domain.Entities;
+using Domain.Entities.Auth;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.Auth
 {
     /// <summary>
     /// Repository interface for accessing user data.
@@ -10,13 +10,21 @@ namespace Application.Interfaces
     public interface IUsuarioRepository
     {
         Task<Usuario> GetByIdAsync(long userId);
+
         Task<IEnumerable<Usuario>> GetAllAsync();
+
         Task<Usuario> GetByAliasAsync(string alias);
+
         Task<Usuario> GetByAliasAndPasswordAsync(string alias, string password);
+
         Task<Usuario> GetByUsernameAsync(string username);
+
         Task<bool> AddAsync(Usuario newUser);
+
         Task UpdateAsync(Usuario user);
+
         Task<List<Usuario>> GetUsersByRoleIdAsync(int roleId);
+
         Task DeleteAsync(Usuario user);
     }
 }

@@ -1,21 +1,14 @@
-using Application.Interfaces;
-using Domain.Entities;
+using Application.Interfaces.Auth;
+using Domain.Entities.Auth;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
-public class AutenticacionUsuario
+public class AutenticacionUsuario(IUsuarioRepository userRepository, IPasswordService passwordService, IConfiguration configuration)
 {
-    private readonly IUsuarioRepository _usuarioRepository;
-    private readonly IPasswordService _passwordService;
-    private readonly IConfiguration _configuration;
-
-    public AutenticacionUsuario(IUsuarioRepository userRepository, IPasswordService passwordService, IConfiguration configuration)
-    {
-        _usuarioRepository = userRepository;
-        _passwordService = passwordService;
-        _configuration = configuration;
-    }
+    private readonly IUsuarioRepository _usuarioRepository = userRepository;
+    private readonly IPasswordService _passwordService = passwordService;
+    private readonly IConfiguration _configuration = configuration;
 
     /// <summary>
     /// Validates the user's credentials.

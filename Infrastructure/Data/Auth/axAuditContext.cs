@@ -1,12 +1,14 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.Auth;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Infrastructure.Data;
+namespace Infrastructure.Data.Auth;
 
-public class LoginCleanContext : DbContext
+public class axAuditContext : DbContext
 {
-    public LoginCleanContext(DbContextOptions<LoginCleanContext> options) : base(options) { }
+    public axAuditContext(DbContextOptions<axAuditContext> options) : base(options)
+    {
+    }
 
     public DbSet<Usuario> Usuarios => Set<Usuario>();
     public DbSet<Rol> Roles => Set<Rol>();
@@ -76,6 +78,5 @@ public class LoginCleanContext : DbContext
                 RolId = 1
             }
         );
-
     }
 }

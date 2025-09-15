@@ -4,7 +4,9 @@ namespace Application.Exceptions
 {
     public class AppException : Exception
     {
-        private AppException(string message) : base(message) { }
+        private AppException(string message) : base(message)
+        {
+        }
 
         public static AppException InvalidEmail(string email)
             => new AppException($"El email '{email}' es inválido.");
@@ -23,7 +25,14 @@ namespace Application.Exceptions
 
         public static AppException UserNotFound(int id)
             => new AppException($"Usuario con id {id} no encontrado.");
+
         public static AppException InvalidPassword()
             => new AppException("La contraseña debe tener al menos 8 caracteres.");
+
+        public static AppException ProductAlreadyExists(decimal codigo)
+    => new AppException($"El producto con código {codigo} ya existe.");
+
+        public static AppException ProductNotFound(decimal codigo)
+            => new AppException($"El producto con código {codigo} no fue encontrado.");
     }
 }

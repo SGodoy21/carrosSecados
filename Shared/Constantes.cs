@@ -9,5 +9,5 @@ public static class Constantes
 {
     public static IConfiguration oConfig { get; set; } = default!;
 
-    public static string EventName => "LoginClean";
+    public static string EventName => "axAudit";
 }

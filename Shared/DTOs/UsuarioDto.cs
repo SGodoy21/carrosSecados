@@ -43,6 +43,5 @@ public class RegistrarUsuarioDto
     public string Email { get; set; }
     public int GrupoId { get; set; }
     public int clienteId { get; set; }
-
     // El rol se asigna automáticamente en el backend
 }

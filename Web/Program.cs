@@ -1,4 +1,4 @@
-using Infrastructure.Data;
+using Infrastructure.Data.Auth;
 using IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shared;
-using System.Security.Claims;
 using System;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 // --- Swagger + JWT ---
 builder.Services.AddSwaggerGen(options =>
 {
+    options.EnableAnnotations();
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "LoginClean API", Version = "v1" });
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -70,7 +71,7 @@ builder.Services.AddOutputCache(options =>
 );
 
 // --- EF Core: DbContext ---
-builder.Services.AddDbContext<LoginCleanContext>(options =>
+builder.Services.AddDbContext<axAuditContext>(options =>
     options.UseSqlServer(Constantes.oConfig.GetConnectionString("axLoginCleanEntities"))
 );
 
@@ -122,14 +123,18 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // ----- Middleware pipeline -----
+//
+
+app.UseDefaultFiles();   // Busca index.html, default.html, etc. en wwwroot
+app.UseStaticFiles();    // Habilita wwwroot
+
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "LoginClean API v1");
-    options.RoutePrefix = "";
+    options.RoutePrefix = "swagger"; // Mueve swagger a /swagger
 });
-app.UseStaticFiles();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
 app.UseCors(DevCorsPolicy);
 

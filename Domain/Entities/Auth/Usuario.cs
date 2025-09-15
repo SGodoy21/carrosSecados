@@ -1,6 +1,6 @@
 using System;
 
-namespace Domain.Entities;
+namespace Domain.Entities.Auth;
 
 /// <summary>
 /// Domain entity representing a system user.
@@ -28,5 +28,6 @@ public class Usuario
 
     // FK
     public int RolId { get; set; }
+
     public Rol Rol { get; set; } = default!;
 }
