@@ -1,6 +1,6 @@
 using Application.Exceptions;
 using Application.Interfaces.Auth;
-using Domain.Entities.Auth;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

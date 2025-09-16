@@ -1,5 +1,5 @@
 using Application.Interfaces.Auth;
-using Domain.Entities.Auth;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Auth
 {
-    public class UsuarioRepository(axAuditContext context) : IUsuarioRepository
+    public class UsuarioRepository(axAnalyticsContext context) : IUsuarioRepository
     {
-        private readonly axAuditContext _context = context;
+        private readonly axAnalyticsContext _context = context;
 
         public async Task<Usuario> GetByIdAsync(long usuarioId)
         {

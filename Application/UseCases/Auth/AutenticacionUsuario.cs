@@ -1,5 +1,5 @@
 using Application.Interfaces.Auth;
-using Domain.Entities.Auth;
+using Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;

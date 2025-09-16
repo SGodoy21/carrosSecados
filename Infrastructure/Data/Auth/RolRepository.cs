@@ -1,13 +1,13 @@
-using Domain.Entities.Auth;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Auth
 {
-    public class RolRepository(axAuditContext context) : IRolRepository
+    public class RolRepository(axAnalyticsContext context) : IRolRepository
     {
-        private readonly axAuditContext _context = context;
+        private readonly axAnalyticsContext _context = context;
 
         public async Task<List<Rol>> GetAllAsync()
             => await _context.Roles.ToListAsync();

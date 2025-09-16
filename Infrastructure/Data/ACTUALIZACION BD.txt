@@ -1,2 +1,5 @@
 dotnet ef migrations add InicialNuevaBD --context axAuditContext --project Infrastructure --startup-project Web
 dotnet ef database update --context axAuditContext --project Infrastructure --startup-project Web
+
+Con scafolind ejecutado sobre el proeycto infrastructure
+dotnet ef dbcontext scaffold "Name=ConnectionStrings:axAnalyticsEntities" Microsoft.EntityFrameworkCore.SqlServer --output-dir ../Domain/Entities --context-dir Data --context axAnalyticsContext --namespace Domain.Entities --context-namespace Infrastructure.Data --startup-project ../Web --project . --force

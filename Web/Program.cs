@@ -1,3 +1,4 @@
+using Infrastructure.Data;
 using Infrastructure.Data.Auth;
 using IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,7 +27,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.EnableAnnotations();
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "LoginClean API", Version = "v1" });
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "axAnalytics API", Version = "v1" });
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Ingrese el token JWT como: Bearer {token}",
@@ -67,12 +68,12 @@ builder.Services.AddCors(options =>
 
 // --- Output Cache (Opcional) ---
 builder.Services.AddOutputCache(options =>
-    options.AddPolicy("LoginClean", b => b.Expire(TimeSpan.FromSeconds(30)).Tag("LoginClean"))
+    options.AddPolicy("axAnalytics", b => b.Expire(TimeSpan.FromSeconds(30)).Tag("axAnalytics"))
 );
 
 // --- EF Core: DbContext ---
-builder.Services.AddDbContext<axAuditContext>(options =>
-    options.UseSqlServer(Constantes.oConfig.GetConnectionString("axLoginCleanEntities"))
+builder.Services.AddDbContext<axAnalyticsContext>(options =>
+    options.UseSqlServer(Constantes.oConfig.GetConnectionString("axAnalyticsEntities"))
 );
 
 // --- IoC: Servicios de tu soluci�n ---
@@ -131,7 +132,7 @@ app.UseStaticFiles();    // Habilita wwwroot
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "LoginClean API v1");
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "axAnalytics API v1");
     options.RoutePrefix = "swagger"; // Mueve swagger a /swagger
 });
 app.UseMiddleware<ExceptionHandlingMiddleware>();
