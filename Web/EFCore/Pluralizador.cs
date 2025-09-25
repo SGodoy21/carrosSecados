@@ -15,6 +15,7 @@ namespace Web.EFCore
             { "Autores", "Autor" },
             { "Usuarios", "Usuario" },
             { "Lotes", "Lote" },
+            { "Fuentes", "Fuente" },
             { "Series", "Serie" }
         };
 

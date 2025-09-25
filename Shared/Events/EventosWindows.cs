@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Shared.Events
 {
-    public class Eventos
+    public class EventosWindows
     {
         System.Diagnostics.EventLog eventLog = new();
 

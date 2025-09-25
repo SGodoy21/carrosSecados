@@ -3,14 +3,6 @@
 		<TargetFramework>net8.0</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Data\CargaVagones\**" />
-	  <Compile Remove="Data\WinCCAuditV74\**" />
-	  <EmbeddedResource Remove="Data\CargaVagones\**" />
-	  <EmbeddedResource Remove="Data\WinCCAuditV74\**" />
-	  <None Remove="Data\CargaVagones\**" />
-	  <None Remove="Data\WinCCAuditV74\**" />
-	</ItemGroup>
-	<ItemGroup>
 		<ProjectReference Include="..\Application\Application.csproj" />
 		<ProjectReference Include="..\Domain\Domain.csproj" />
 		<ProjectReference Include="..\Shared\Shared.csproj" />

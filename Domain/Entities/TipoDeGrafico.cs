@@ -9,5 +9,7 @@ public partial class TipoDeGrafico
 
     public string Nombre { get; set; }
 
+    public string JsConfiguracion { get; set; }
+
     public virtual ICollection<Grafico> Graficos { get; set; } = new List<Grafico>();
 }

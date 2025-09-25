@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
-using Shared.DTOs;
+using Shared.DTOs.Auth;
 using Shared.Responses;
 using Swashbuckle.AspNetCore.Annotations;
 using System;

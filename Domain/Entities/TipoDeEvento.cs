@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Domain.Entities;
 
-public partial class Grafico
+public partial class TipoDeEvento
 {
     public int Id { get; set; }
 
@@ -11,13 +11,7 @@ public partial class Grafico
 
     public int IdSistema { get; set; }
 
-    public int IdTipoGrafico { get; set; }
-
-    public bool PorDefecto { get; set; }
-
-    public string JsConfiguracion { get; set; }
+    public virtual ICollection<Evento> Eventos { get; set; } = new List<Evento>();
 
     public virtual Sistema IdSistemaNavigation { get; set; }
-
-    public virtual TipoDeGrafico IdTipoGraficoNavigation { get; set; }
 }

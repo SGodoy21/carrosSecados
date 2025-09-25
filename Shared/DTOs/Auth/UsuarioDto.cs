@@ -1,4 +1,4 @@
-﻿namespace Shared.DTOs;
+﻿namespace Shared.DTOs.Auth;
 
 /// <summary>
 /// DTO for public user response.

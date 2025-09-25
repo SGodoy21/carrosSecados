@@ -30,6 +30,7 @@ public class JwtTokenGenerator(IConfiguration configuration)
         new Claim(ClaimTypes.Email, usuario.Email ?? ""),
         new Claim(ClaimTypes.Role, usuario.Rol?.Nombre ?? "Usuario"),
         new Claim("NombreApellido", $"{usuario.Nombre} {usuario.Apellido}"),
+        new Claim(ClaimTypes.GroupSid, usuario.GrupoId.ToString()),
     };
 
         if (usuario.GrupoId != null)

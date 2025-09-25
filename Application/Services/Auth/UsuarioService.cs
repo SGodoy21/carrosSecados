@@ -1,6 +1,7 @@
 using Application.Exceptions;
 using Application.Interfaces.Auth;
 using Domain.Entities;
+using Shared.DTOs.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Application.Services.Auth
         private readonly IPasswordService _passwordService = passwordService;
         private readonly IRolRepository _rolRepository = roleRepository;
 
-        public async Task<bool> ChangeUsuarioRolAsync(Shared.DTOs.CambiarRolUsuarioDto dto)
+        public async Task<bool> ChangeUsuarioRolAsync(CambiarRolUsuarioDto dto)
         {
             var user = await _usuarioRepository.GetByIdAsync(dto.UsuarioId);
             if (user == null)
@@ -29,7 +30,7 @@ namespace Application.Services.Auth
             return true;
         }
 
-        public async Task<bool> RegistrarUsuarioAsync(Shared.DTOs.RegistrarUsuarioDto dto)
+        public async Task<bool> RegistrarUsuarioAsync(RegistrarUsuarioDto dto)
         {
             // Validaciones mínimas
             if (string.IsNullOrWhiteSpace(dto.Password) || dto.Password.Length < 8)
@@ -113,10 +114,10 @@ namespace Application.Services.Auth
             return true;
         }
 
-        public async Task<List<Shared.DTOs.UsuarioDto>> GetAllUsuarioAsync()
+        public async Task<List<UsuarioDto>> GetAllUsuarioAsync()
         {
             var users = await _usuarioRepository.GetAllAsync();
-            return users.Select(u => new Shared.DTOs.UsuarioDto
+            return users.Select(u => new UsuarioDto
             {
                 Id = u.Id,
                 NombreUsuario = u.NombreUsuario,

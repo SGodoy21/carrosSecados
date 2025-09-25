@@ -16,11 +16,21 @@ public partial class axAnalyticsContext : DbContext
     {
     }
 
+    public virtual DbSet<Evento> Eventos { get; set; }
+
+    public virtual DbSet<Fuente> Fuentes { get; set; }
+
     public virtual DbSet<Grafico> Graficos { get; set; }
+
+    public virtual DbSet<Grupo> Grupos { get; set; }
+
+    public virtual DbSet<GrupoSistema> GruposSistemas { get; set; }
 
     public virtual DbSet<Rol> Roles { get; set; }
 
     public virtual DbSet<Sistema> Sistemas { get; set; }
+
+    public virtual DbSet<TipoDeEvento> TiposDesEventos { get; set; }
 
     public virtual DbSet<TipoDeGrafico> TiposDesGraficos { get; set; }
 
@@ -31,8 +41,51 @@ public partial class axAnalyticsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Evento>(entity =>
+        {
+            entity.Property(e => e.DatoJs)
+                .IsRequired()
+                .HasMaxLength(500)
+                .IsUnicode(false);
+            entity.Property(e => e.Fecha).HasColumnType("datetime");
+            entity.Property(e => e.Unidad)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.IdFuenteNavigation).WithMany(p => p.Eventos)
+                .HasForeignKey(d => d.IdFuente)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Eventos_Fuentes");
+
+            entity.HasOne(d => d.IdTipoEventoNavigation).WithMany(p => p.Eventos)
+                .HasForeignKey(d => d.IdTipoEvento)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Eventos_TiposDeEventos");
+        });
+
+        modelBuilder.Entity<Fuente>(entity =>
+        {
+            entity.Property(e => e.Nombre)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Referencia)
+                .IsRequired()
+                .HasMaxLength(20)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.IdSistemaNavigation).WithMany(p => p.Fuentes)
+                .HasForeignKey(d => d.IdSistema)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Fuentes_Fuentes");
+        });
+
         modelBuilder.Entity<Grafico>(entity =>
         {
+            entity.Property(e => e.JsConfiguracion)
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.Nombre)
                 .IsRequired()
                 .HasMaxLength(50)
@@ -47,6 +100,29 @@ public partial class axAnalyticsContext : DbContext
                 .HasForeignKey(d => d.IdTipoGrafico)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Graficos_TiposDeGraficos");
+        });
+
+        modelBuilder.Entity<Grupo>(entity =>
+        {
+            entity.Property(e => e.Nombre)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<GrupoSistema>(entity =>
+        {
+            entity.Property(e => e.IdSistema).HasColumnName("IdSIstema");
+
+            entity.HasOne(d => d.IdGrupoNavigation).WithMany(p => p.GruposSistemas)
+                .HasForeignKey(d => d.IdGrupo)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_GruposSistemas_Grupos");
+
+            entity.HasOne(d => d.IdSistemaNavigation).WithMany(p => p.GruposSistemas)
+                .HasForeignKey(d => d.IdSistema)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_GruposSistemas_Sistemas");
         });
 
         modelBuilder.Entity<Rol>(entity =>
@@ -64,10 +140,31 @@ public partial class axAnalyticsContext : DbContext
                 .IsUnicode(false);
         });
 
+        modelBuilder.Entity<TipoDeEvento>(entity =>
+        {
+            entity.ToTable("TiposDeEventos");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Nombre)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.IdSistemaNavigation).WithMany(p => p.TiposDesEventos)
+                .HasForeignKey(d => d.IdSistema)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TiposDeEventos_Sistemas");
+        });
+
         modelBuilder.Entity<TipoDeGrafico>(entity =>
         {
             entity.ToTable("TiposDeGraficos");
 
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.JsConfiguracion)
+                .IsRequired()
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.Nombre)
                 .IsRequired()
                 .HasMaxLength(50)
