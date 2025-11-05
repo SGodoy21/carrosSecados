@@ -72,7 +72,7 @@ builder.Services.AddOutputCache(options =>
 );
 
 // --- EF Core: DbContext ---
-builder.Services.AddDbContext<axAnalyticsContext>(options =>
+builder.Services.AddDbContext<axLoginCleanContext>(options =>
     options.UseSqlServer(Constantes.oConfig.GetConnectionString("axAnalyticsEntities"))
 );
 

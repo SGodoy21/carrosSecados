@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿
+
+using Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -9,28 +11,32 @@ using System.Text;
 
 namespace Application.Helpers;
 
-public class JwtTokenGenerator(IConfiguration configuration)
+public class JwtTokenGenerator
 {
-    private readonly IConfiguration _configuration = configuration;
+    private readonly IConfiguration _configuration;
+
+    public JwtTokenGenerator(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
 
     public string GenerarToken(Usuario usuario)
     {
         var secretKey = _configuration["JwtSettings:Key"];
         var issuer = _configuration["JwtSettings:Issuer"];
         var audience = _configuration["JwtSettings:Audience"];
-        var expirationDays = _configuration.GetValue<int>("JwtSettings:ExpirationInDays", 30);
+        var expirationMinutes = _configuration.GetValue<int>("JwtSettings:ExpirationInMinutes", 120);
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var claims = new List<Claim>
+            var claims = new List<Claim>
     {
         new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
         new Claim(ClaimTypes.Name, usuario.NombreUsuario),
         new Claim(ClaimTypes.Email, usuario.Email ?? ""),
         new Claim(ClaimTypes.Role, usuario.Rol?.Nombre ?? "Usuario"),
         new Claim("NombreApellido", $"{usuario.Nombre} {usuario.Apellido}"),
-        new Claim(ClaimTypes.GroupSid, usuario.GrupoId.ToString()),
     };
 
         if (usuario.GrupoId != null)
@@ -45,14 +51,16 @@ public class JwtTokenGenerator(IConfiguration configuration)
             Subject = new ClaimsIdentity(claims),
             NotBefore = now,
             IssuedAt = now,
-            Expires = now.AddDays(expirationDays),
+            Expires = now.AddMinutes(expirationMinutes),
             SigningCredentials = credentials,
             Issuer = issuer,
             Audience = audience
         };
 
+
         var handler = new JwtSecurityTokenHandler();
         var token = handler.CreateToken(tokenDescriptor);
         return handler.WriteToken(token);
     }
+
 }

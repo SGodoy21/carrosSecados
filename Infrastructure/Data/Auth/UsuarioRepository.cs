@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Auth
 {
-    public class UsuarioRepository(axAnalyticsContext context) : IUsuarioRepository
+    public class UsuarioRepository(axLoginCleanContext context) : IUsuarioRepository
     {
-        private readonly axAnalyticsContext _context = context;
+        private readonly axLoginCleanContext _context = context;
 
         public async Task<Usuario> GetByIdAsync(long usuarioId)
         {

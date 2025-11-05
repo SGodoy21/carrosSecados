@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Auth
 {
-    public class RolRepository(axAnalyticsContext context) : IRolRepository
+    public class RolRepository(axLoginCleanContext context) : IRolRepository
     {
-        private readonly axAnalyticsContext _context = context;
+        private readonly axLoginCleanContext _context = context;
 
         public async Task<List<Rol>> GetAllAsync()
             => await _context.Roles.ToListAsync();
