@@ -16,6 +16,10 @@ public partial class axLoginCleanContext : DbContext
     {
     }
 
+    public virtual DbSet<MenuItem> MenusItems { get; set; }
+
+    public virtual DbSet<MenuItemRol> MenusItemsRoles { get; set; }
+
     public virtual DbSet<Rol> Roles { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
@@ -25,6 +29,22 @@ public partial class axLoginCleanContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<MenuItem>(entity =>
+        {
+            entity.ToTable("MenuItems");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Icon).HasMaxLength(100);
+            entity.Property(e => e.Label).HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<MenuItemRol>(entity =>
+        {
+            entity.HasKey(e => new { e.MenuItemId, e.RolId });
+
+            entity.ToTable("MenuItemRoles");
+        });
+
         modelBuilder.Entity<Rol>(entity =>
         {
             entity.Property(e => e.Nombre)

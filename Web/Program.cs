@@ -1,5 +1,9 @@
+using Application.Interfaces;
+using Application.Interfaces.Auth;
+using Application.Services;
 using Infrastructure.Data;
 using Infrastructure.Data.Auth;
+using Infrastructure.Repositories;
 using IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -120,6 +124,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<IMenuService, MenuService>();
+builder.Services.AddScoped<IMenuRepository, MenuRepository>(); // tu implementación real
+
 
 var app = builder.Build();
 
