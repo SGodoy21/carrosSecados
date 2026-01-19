@@ -126,7 +126,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IMenuService, MenuService>();
-builder.Services.AddScoped<IMenuRepository, MenuRepository>(); // tu implementación real
+builder.Services.AddScoped<IMenuRepository, MenuRepository>(); 
+builder.Services.AddScoped<IFiltroService, FiltroService>();
+builder.Services.AddScoped<IFiltroRepository, FiltroRepository>(); 
 
 
 var app = builder.Build();

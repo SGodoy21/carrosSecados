@@ -8,4 +8,7 @@
 		<PackageReference Include="System.Diagnostics.EventLog" Version="9.0.7" />
 
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Domain\Domain.csproj" />
+	</ItemGroup>
 </Project>
