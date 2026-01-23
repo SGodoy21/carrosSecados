@@ -42,31 +42,35 @@ namespace Application.Services
         }
 
 
-        public async Task<List<FiltroDto>> GetByIdAsync(int Id)
+        public async Task<FiltroDto?> GetByIdAsync(int Id)
         {
-            var filtros = await _filtroRepository.GetByIdAsync(Id);
+            var filtro = await _filtroRepository.GetByIdAsync(Id);
 
-            return filtros.Select(f => new FiltroDto
+            return new FiltroDto
             {
-                IdFiltro = f.IdFiltro,
-                Nombre = f.Nombre,
-                ButtonClear = f.ButtonClear,
-                Campos = f.FiltrosCampos
-                    .OrderBy(c => c.Orden)
-                    .Select(c => new FiltroCampoDto
-                    {
-                        IdCampo = c.IdCampo,
-                        Nombre = c.Nombre,
-                        Title = c.Title,
-                        PlaceHolder = c.PlaceHolder,
-                        Format = c.Format,
-                        Type = c.Type,
-                        Conditions = c.Conditions ?? "",
-                        options = c.OptionsSourceCode ?? "",
-                        Size = c.Size,
-                        Orden = c.Orden
-                    }).ToList()
-            }).ToList();
+                IdFiltro = filtro.IdFiltro,
+                Nombre = filtro.Nombre,
+                ButtonClear = filtro.ButtonClear,
+                Campos = filtro.FiltrosCampos
+             .OrderBy(c => c.Orden)
+             .Select(c => new FiltroCampoDto
+             {
+                 IdCampo = c.IdCampo,
+                 Nombre = c.Nombre,
+                 Title = c.Title,
+                 PlaceHolder = c.PlaceHolder,
+                 Format = c.Format,
+                 Type = c.Type,
+                 Conditions = c.Conditions ?? "",
+                 options = c.OptionsSourceCode ?? "",
+                 Size = c.Size,
+                 Orden = c.Orden
+             })
+             .ToList()
+            };
         }
+
+
+        
     }
 }

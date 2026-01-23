@@ -22,5 +22,14 @@ public class FiltroController(IFiltroService filtroService) : ControllerBase
         var filtros = await _filtroService.GetAllAsync();
         return Ok(AxResponse<List<FiltroDto>>.Ok(filtros, "filtros obtenidos correctamente."));
     }
+
+
+    [HttpGet("GetOne")]
+    public async Task<ActionResult<AxResponse<FiltroDto>>> GetOneFiltro(int idFiltro)
+    {
+
+        var filtro = await _filtroService.GetByIdAsync(idFiltro);
+        return Ok(AxResponse<FiltroDto>.Ok(filtro, "filtros obtenidos correctamente."));
+    }
 }
 

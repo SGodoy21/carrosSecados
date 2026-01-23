@@ -11,7 +11,7 @@ namespace Application.Interfaces
     public interface IFiltroService
     {
         Task<List<FiltroDto>> GetAllAsync();
-        Task<List<FiltroDto>> GetByIdAsync(int id);
+        Task<FiltroDto> GetByIdAsync(int id);
 
     }
 }

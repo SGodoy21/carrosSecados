@@ -11,6 +11,6 @@ namespace Application.Interfaces
     public interface IFiltroRepository
     {
         Task<List<Filtro>> GetAllAsync();
-        Task<List<Filtro>> GetByIdAsync(int id);
+        Task<Filtro?> GetByIdAsync(int id);
     }
 }

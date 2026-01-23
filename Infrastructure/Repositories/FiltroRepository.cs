@@ -16,7 +16,7 @@ namespace Infrastructure.Repositories
         public async Task<List<Filtro>> GetAllAsync()
             => await _context.Filtros.AsNoTracking().Include(f => f.FiltrosCampos).ToListAsync();
 
-        public async Task<List<Filtro>> GetByIdAsync(int Id)
-          => await _context.Filtros.AsNoTracking().Where(f => f.IdFiltro == Id).Include(f => f.FiltrosCampos).ToListAsync();
+        public async Task<Filtro?> GetByIdAsync(int Id)
+          => await _context.Filtros.Include(f => f.FiltrosCampos).FirstOrDefaultAsync(f => f.IdFiltro == Id);
     }
 }
