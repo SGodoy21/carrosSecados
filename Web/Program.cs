@@ -129,6 +129,8 @@ builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddScoped<IMenuRepository, MenuRepository>(); 
 builder.Services.AddScoped<IFiltroService, FiltroService>();
 builder.Services.AddScoped<IFiltroRepository, FiltroRepository>(); 
+builder.Services.AddScoped<ICrudTableService, CrudTableService>();
+builder.Services.AddScoped<ICrudTableRepository, CrudTableRespository>();
 
 
 var app = builder.Build();
