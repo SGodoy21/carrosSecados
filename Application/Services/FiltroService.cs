@@ -44,7 +44,7 @@ namespace Application.Services
 
         public async Task<FiltroDto?> GetByIdAsync(int Id)
         {
-            var filtro = await _filtroRepository.GetByIdAsync(Id);
+            var filtro = await _filtroRepository.GetByIdAsync(Id);        
 
             return new FiltroDto
             {
@@ -52,6 +52,7 @@ namespace Application.Services
                 Nombre = filtro.Nombre,
                 ButtonClear = filtro.ButtonClear,
                 Campos = filtro.FiltrosCampos
+                .Where(c => c.Activo)
              .OrderBy(c => c.Orden)
              .Select(c => new FiltroCampoDto
              {
