@@ -1,5 +1,7 @@
 using Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Application.Interfaces.Auth
@@ -18,6 +20,7 @@ namespace Application.Interfaces.Auth
         Task<Usuario> GetByAliasAndPasswordAsync(string alias, string password);
 
         Task<Usuario> GetByUsernameAsync(string username);
+        Task<IEnumerable<Usuario>> GetByDynamicFilterAsync(JsonElement filtro);
 
         Task<bool> AddAsync(Usuario newUser);
 

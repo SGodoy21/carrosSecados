@@ -4,12 +4,14 @@ using Application.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Any;
 using Shared;
 using Shared.DTOs.Auth;
 using Shared.Responses;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Web.Controllers;
@@ -217,6 +219,17 @@ public class UsuarioController(
     public async Task<ActionResult<AxResponse<List<UsuarioDto>>>> List()
     {
         var users = await _userService.GetAllUsuarioAsync();
+        return Ok(AxResponse<List<UsuarioDto>>.Ok(users, "Usuarios obtenidos correctamente."));
+    }
+
+
+    //[Authorize(Roles = "Admin")]
+    [HttpPost("listByFilter")]
+    [SwaggerOperation(Summary = "listByFilter", Description = "Devuelve la lista de todos los usuarios filtrada.")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<AxResponse<List<UsuarioDto>>>> listByFilter([FromBody] JsonElement filtro)
+    {
+        var users = await _userService.GetFiltroUsuarios(filtro);
         return Ok(AxResponse<List<UsuarioDto>>.Ok(users, "Usuarios obtenidos correctamente."));
     }
 

@@ -1,11 +1,16 @@
 using Application.Exceptions;
 using Application.Interfaces.Auth;
 using Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shared.DTOs.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Application.Services.Auth
 {
@@ -128,6 +133,22 @@ namespace Application.Services.Auth
                 Habilitado = u.Habilitado
             }).ToList();
         }
+
+        public async Task<List<UsuarioDto>> GetFiltroUsuarios([FromBody] JsonElement filtro)
+        {
+            var users = await _usuarioRepository.GetByDynamicFilterAsync(filtro);
+            return users.Select(u => new UsuarioDto
+            {
+                Id = u.Id,
+                NombreUsuario = u.NombreUsuario,
+                NombreApellido = $"{u.Nombre} {u.Apellido}",
+                Email = u.Email,
+                RolId = u.RolId,
+                GrupoId = u.GrupoId,
+                Habilitado = u.Habilitado
+            }).ToList();
+        }
+
 
         public async Task<bool> ChangePasswordAsync(long userId, string newPassword)
         {
