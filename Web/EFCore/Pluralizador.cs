@@ -16,7 +16,8 @@ namespace Web.EFCore
             { "Usuarios", "Usuario" },
             { "Lotes", "Lote" },
             { "Fuentes", "Fuente" },
-            { "Series", "Serie" }
+            { "Series", "Serie" },
+            {"Roles", "Rol" }
         };
 
         public string Pluralize(string name)

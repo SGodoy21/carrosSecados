@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class CrudTableRespository(axLoginCleanContext context) : ICrudTableRepository
+    public class CrudTableRespository(axCarrosManiagroContext context) : ICrudTableRepository
     {
-        private readonly axLoginCleanContext _context = context;
+        private readonly axCarrosManiagroContext _context = context;
         public async Task<List<CrudConfig>> GetAllAsync()
-            => await _context.CrudsConfigs.AsNoTracking().Include(f => f.CrudsConfigsCampos).Include(e=>e.CrudsConfigsEncabezados).ToListAsync();
+            => await _context.CrudsConfigs.AsNoTracking().Include(f => f.CrudsConfigsCampos).Include(e => e.CrudsConfigsEncabezados).ToListAsync();
     }
 }

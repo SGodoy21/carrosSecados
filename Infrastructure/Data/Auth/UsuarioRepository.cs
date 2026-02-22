@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Auth
 {
-    public class UsuarioRepository(axLoginCleanContext context) : IUsuarioRepository
+    public class UsuarioRepository(axCarrosManiagroContext context) : IUsuarioRepository
     {
-        private readonly axLoginCleanContext _context = context;
+        private readonly axCarrosManiagroContext _context = context;
 
         public async Task<Usuario> GetByIdAsync(long usuarioId)
         {
-            return await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Id == usuarioId);
+            return await _context.Usuarios.Include(u => u.IdRol).FirstOrDefaultAsync(u => u.Id == usuarioId);
         }
 
         public async Task<IEnumerable<Usuario>> GetAllAsync()
@@ -38,7 +38,7 @@ namespace Infrastructure.Data.Auth
 
         public async Task<Usuario> GetByUsernameAsync(string username)
         {
-            return await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.NombreUsuario == username);
+            return await _context.Usuarios.Include(u => u.IdRol).FirstOrDefaultAsync(u => u.NombreUsuario == username);
         }
 
         public async Task<IEnumerable<Usuario>> GetByDynamicFilterAsync(JsonElement filtro)
@@ -154,7 +154,7 @@ namespace Infrastructure.Data.Auth
 
         public async Task<List<Usuario>> GetUsersByRoleIdAsync(int roleId)
         {
-            return await _context.Usuarios.Where(u => u.RolId == roleId).ToListAsync();
+            return await _context.Usuarios.Where(u => u.IdRol == roleId).ToListAsync();
         }
 
         public async Task DeleteAsync(Usuario user)

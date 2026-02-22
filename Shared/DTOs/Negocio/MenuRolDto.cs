@@ -9,6 +9,6 @@ namespace Shared.DTOs.Negocio
     public class MenuRolDto
     {
         public int MenuItemId { get; set; }
-        public int RolId { get; set; }
+        public long RolId { get; set; }
     }
 }

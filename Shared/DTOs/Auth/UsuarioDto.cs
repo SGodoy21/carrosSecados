@@ -9,7 +9,7 @@ public class UsuarioDto
     public string NombreUsuario { get; set; } = default!;
     public string NombreApellido { get; set; } = default!;
     public string Email { get; set; } = default!;
-    public int RolId { get; set; }
+    public long RolId { get; set; }
     public int GrupoId { get; set; }
     public bool Habilitado { get; set; }
 }
@@ -29,7 +29,7 @@ public class UsuarioLoginResponseDto
 public class CambiarRolUsuarioDto
 {
     public long UsuarioId { get; set; }
-    public int RolId { get; set; }
+    public long RolId { get; set; }
     // Opcional: public string ChangedBy { get; set; }
 }
 
@@ -42,6 +42,5 @@ public class RegistrarUsuarioDto
     public string Telefono { get; set; }
     public string Email { get; set; }
     public int GrupoId { get; set; }
-    public int clienteId { get; set; }
     // El rol se asigna automáticamente en el backend
 }

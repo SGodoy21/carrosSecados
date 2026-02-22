@@ -6,7 +6,7 @@ public interface IRolRepository
 {
     Task<List<Rol>> GetAllAsync();
 
-    Task<Rol> GetByIdAsync(int id);
+    Task<Rol> GetByIdAsync(long id);
 
     Task<Rol> GetByNombreAsync(string nombre);
 

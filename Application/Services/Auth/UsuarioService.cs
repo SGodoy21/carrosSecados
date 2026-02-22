@@ -30,7 +30,7 @@ namespace Application.Services.Auth
             if (role == null)
                 throw AppException.RoleNotFound(dto.RolId);
 
-            user.RolId = dto.RolId;
+            user.IdRol = dto.RolId;
             await _usuarioRepository.UpdateAsync(user);
             return true;
         }
@@ -67,9 +67,8 @@ namespace Application.Services.Auth
                 RecoveryToken = null,
                 FechaExpiracion = null,
                 FechaCreacion = DateTime.UtcNow,
-                GrupoId = dto.GrupoId,
-                ClienteId = dto.clienteId,
-                RolId = 2 // Rol por defecto: Usuario
+                IdGrupo = dto.GrupoId,                
+                IdRol = 2 // Rol por defecto: Usuario
             };
 
             await _usuarioRepository.AddAsync(user);
@@ -128,8 +127,8 @@ namespace Application.Services.Auth
                 NombreUsuario = u.NombreUsuario,
                 NombreApellido = $"{u.Nombre} {u.Apellido}",
                 Email = u.Email,
-                RolId = u.RolId,
-                GrupoId = u.GrupoId,
+                RolId = u.IdRol,
+                GrupoId = (int)u.IdGrupo,
                 Habilitado = u.Habilitado
             }).ToList();
         }
@@ -143,8 +142,8 @@ namespace Application.Services.Auth
                 NombreUsuario = u.NombreUsuario,
                 NombreApellido = $"{u.Nombre} {u.Apellido}",
                 Email = u.Email,
-                RolId = u.RolId,
-                GrupoId = u.GrupoId,
+                RolId = u.IdRol,
+                GrupoId = (int)u.IdGrupo,
                 Habilitado = u.Habilitado
             }).ToList();
         }

@@ -23,9 +23,7 @@ public partial class Usuario
 
     public int AccesosIncorrectos { get; set; }
 
-    public int GrupoId { get; set; }
-
-    public long ClienteId { get; set; }
+    public int IdGrupo { get; set; }
 
     public string RecoveryToken { get; set; }
 
@@ -33,7 +31,7 @@ public partial class Usuario
 
     public DateTime FechaCreacion { get; set; }
 
-    public int RolId { get; set; }
+    public long IdRol { get; set; }
 
-    public virtual Rol Rol { get; set; }
+    public virtual Rol IdRolNavigation { get; set; }
 }

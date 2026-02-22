@@ -112,8 +112,8 @@ public class UsuarioController(
                     NombreUsuario = user.NombreUsuario,
                     NombreApellido = $"{user.Nombre} {user.Apellido}",
                     Email = user.Email,
-                    RolId = user.RolId,
-                    GrupoId = user.GrupoId
+                    RolId = user.IdRol,
+                    GrupoId = user.IdGrupo
                 }
             };
 

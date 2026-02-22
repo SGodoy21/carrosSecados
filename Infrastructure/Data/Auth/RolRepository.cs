@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Auth
 {
-    public class RolRepository(axLoginCleanContext context) : IRolRepository
+    public class RolRepository(axCarrosManiagroContext context) : IRolRepository
     {
-        private readonly axLoginCleanContext _context = context;
+        private readonly axCarrosManiagroContext _context = context;
 
         public async Task<List<Rol>> GetAllAsync()
             => await _context.Roles.ToListAsync();
 
-        public async Task<Rol> GetByIdAsync(int id)
+        public async Task<Rol> GetByIdAsync(long id)
             => await _context.Roles.FirstOrDefaultAsync(r => r.Id == id);
 
         public async Task<Rol> GetByNombreAsync(string nombre)

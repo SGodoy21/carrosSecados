@@ -11,19 +11,19 @@ namespace Application.Exceptions
         public static AppException InvalidEmail(string email)
             => new AppException($"El email '{email}' es inválido.");
 
-        public static AppException RoleInUse(int id)
+        public static AppException RoleInUse(long id)
             => new AppException($"No se puede eliminar el rol con id {id} porque está asignado a usuarios.");
 
         public static AppException RoleNameExists(string name)
             => new AppException($"El nombre de rol '{name}' ya existe.");
 
-        public static AppException RoleNotFound(int id)
+        public static AppException RoleNotFound(long id)
             => new AppException($"Rol con id {id} no encontrado.");
 
         public static AppException UsernameExists(string username)
             => new AppException($"El nombre de usuario '{username}' ya está registrado.");
 
-        public static AppException UserNotFound(int id)
+        public static AppException UserNotFound(long id)
             => new AppException($"Usuario con id {id} no encontrado.");
 
         public static AppException InvalidPassword()

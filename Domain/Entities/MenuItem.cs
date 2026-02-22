@@ -18,4 +18,6 @@ public partial class MenuItem
     public int? Orden { get; set; }
 
     public bool? Activo { get; set; }
+
+    public virtual ICollection<MenuItemRol> MenuItemRoles { get; set; } = new List<MenuItemRol>();
 }

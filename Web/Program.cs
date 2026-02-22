@@ -3,7 +3,7 @@ using Application.Interfaces.Auth;
 using Application.Services;
 using Infrastructure.Data;
 using Infrastructure.Data.Auth;
-using Infrastructure.Repositories;
+//using Infrastructure.Repositories;
 using IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -76,8 +76,8 @@ builder.Services.AddOutputCache(options =>
 );
 
 // --- EF Core: DbContext ---
-builder.Services.AddDbContext<axLoginCleanContext>(options =>
-    options.UseSqlServer(Constantes.oConfig.GetConnectionString("axAnalyticsEntities"))
+builder.Services.AddDbContext<axCarrosManiagroContext>(options =>
+    options.UseSqlServer(Constantes.oConfig.GetConnectionString("axCarrosSecadoresConnection"))
 );
 
 // --- IoC: Servicios de tu soluci�n ---
@@ -126,11 +126,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IMenuService, MenuService>();
-builder.Services.AddScoped<IMenuRepository, MenuRepository>(); 
+//builder.Services.AddScoped<IMenuRepository, MenuRepository>(); 
 builder.Services.AddScoped<IFiltroService, FiltroService>();
-builder.Services.AddScoped<IFiltroRepository, FiltroRepository>(); 
+//builder.Services.AddScoped<IFiltroRepository, FiltroRepository>(); 
 builder.Services.AddScoped<ICrudTableService, CrudTableService>();
-builder.Services.AddScoped<ICrudTableRepository, CrudTableRespository>();
+//builder.Services.AddScoped<ICrudTableRepository, CrudTableRespository>();
 
 
 var app = builder.Build();

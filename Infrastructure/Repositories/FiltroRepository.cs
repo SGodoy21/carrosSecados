@@ -10,13 +10,15 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class FiltroRepository(axLoginCleanContext context) : IFiltroRepository
+    public class FiltroRepository(axCarrosManiagroContext context) : IFiltroRepository
     {
-        private readonly axLoginCleanContext _context = context;
+        private readonly axCarrosManiagroContext _context = context;
+           
+
         public async Task<List<Filtro>> GetAllAsync()
             => await _context.Filtros.AsNoTracking().Include(f => f.FiltrosCampos).ToListAsync();
-
-        public async Task<Filtro?> GetByIdAsync(int Id)
-          => await _context.Filtros.Include(f => f.FiltrosCampos).FirstOrDefaultAsync(f => f.IdFiltro == Id);
+                  
+        public async Task<Filtro> GetByIdAsync(int id)
+        => await _context.Filtros.Include(f => f.FiltrosCampos).FirstOrDefaultAsync(f => f.IdFiltro == id);
     }
 }

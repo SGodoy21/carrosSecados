@@ -35,12 +35,12 @@ public class JwtTokenGenerator
         new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
         new Claim(ClaimTypes.Name, usuario.NombreUsuario),
         new Claim(ClaimTypes.Email, usuario.Email ?? ""),
-        new Claim(ClaimTypes.Role, usuario.Rol?.Nombre ?? "Usuario"),
+        new Claim(ClaimTypes.Role, usuario.IdRolNavigation?.Nombre ?? "Usuario"),
         new Claim("NombreApellido", $"{usuario.Nombre} {usuario.Apellido}"),
     };
 
-        if (usuario.GrupoId != null)
-            claims.Add(new Claim("GrupoId", usuario.GrupoId.ToString()));
+        if (usuario.IdGrupo != null)
+            claims.Add(new Claim("GrupoId", usuario.IdGrupo.ToString()));
 
         claims.Add(new Claim("Habilitado", usuario.Habilitado.ToString()));
 
