@@ -11,5 +11,5 @@ public partial class Rol
 
     public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 
-    public virtual ICollection<MenuItemRol> MenuItemRoles { get; set; } = new List<MenuItemRol>();
+    public virtual ICollection<MenuItem> MenusItems { get; set; } = new List<MenuItem>();
 }

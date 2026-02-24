@@ -23,7 +23,7 @@ public partial class Usuario
 
     public int AccesosIncorrectos { get; set; }
 
-    public int IdGrupo { get; set; }
+    public int? IdGrupo { get; set; }
 
     public string RecoveryToken { get; set; }
 
@@ -34,4 +34,6 @@ public partial class Usuario
     public long IdRol { get; set; }
 
     public virtual Rol IdRolNavigation { get; set; }
+
+    public virtual ICollection<SecadoraCarro> SecadorasCarros { get; set; } = new List<SecadoraCarro>();
 }

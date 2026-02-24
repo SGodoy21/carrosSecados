@@ -3,6 +3,10 @@ using Application.Interfaces.Auth;
 using Application.Services;
 using Infrastructure.Data;
 using Infrastructure.Data.Auth;
+using Infrastructure.Repositories;
+using Infrastructure.Seeders;
+
+
 //using Infrastructure.Repositories;
 using IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -126,14 +130,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IMenuService, MenuService>();
-//builder.Services.AddScoped<IMenuRepository, MenuRepository>(); 
+builder.Services.AddScoped<IMenuRepository, MenuRepository>(); 
 builder.Services.AddScoped<IFiltroService, FiltroService>();
-//builder.Services.AddScoped<IFiltroRepository, FiltroRepository>(); 
+builder.Services.AddScoped<IFiltroRepository, FiltroRepository>(); 
 builder.Services.AddScoped<ICrudTableService, CrudTableService>();
-//builder.Services.AddScoped<ICrudTableRepository, CrudTableRespository>();
+builder.Services.AddScoped<ICrudTableRepository, CrudTableRespository>();
 
 
 var app = builder.Build();
+
+// --- Seeders que se ejecutan para cargar datos en la base de datos de manera predefinida --- // 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<axCarrosManiagroContext>();
+    await EstadoSeeder.SeedAsync(context);
+}
 
 // ----- Middleware pipeline -----
 //

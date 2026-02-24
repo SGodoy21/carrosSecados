@@ -7,7 +7,7 @@ public partial class HistorialEstado
 {
     public long Id { get; set; }
 
-    public long IdSecadora { get; set; }
+    public long? IdSecadora { get; set; }
 
     public long? IdCarro { get; set; }
 

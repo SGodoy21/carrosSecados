@@ -77,5 +77,5 @@ public partial class Secadora
 
     public virtual ICollection<HistorialEstado> HistorialsEstados { get; set; } = new List<HistorialEstado>();
 
-    public virtual ICollection<Carro> IdsCarros { get; set; } = new List<Carro>();
+    public virtual ICollection<SecadoraCarro> SecadorasCarros { get; set; } = new List<SecadoraCarro>();
 }

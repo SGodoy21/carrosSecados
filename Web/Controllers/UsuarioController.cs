@@ -113,7 +113,7 @@ public class UsuarioController(
                     NombreApellido = $"{user.Nombre} {user.Apellido}",
                     Email = user.Email,
                     RolId = user.IdRol,
-                    GrupoId = user.IdGrupo
+                    GrupoId = (int)user.IdGrupo
                 }
             };
 
